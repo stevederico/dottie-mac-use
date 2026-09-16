@@ -2,8 +2,17 @@
   "name": "dottie-mac-use",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "type": "module",
-  "description": "macOS tools + dottie-mac-use-ax CLI (:1319 AX/EventKit). Standalone MCP — no Dottie.app or gateway required.",
+  "description": "macOS agent tools + AX/EventKit CLI — standalone MCP/HTTP, no Dottie.app required",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stevederico/dottie-mac-use.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stevederico/dottie-mac-use/issues"
+  },
+  "homepage": "https://github.com/stevederico/dottie-mac-use#readme",
   "engines": {
     "node": ">=22.0.0"
   },
