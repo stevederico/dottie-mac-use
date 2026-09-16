@@ -4,12 +4,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { analyzeWithAgentVision } from './vision_client.js';
 import { DOTTIE_PRO_BASE } from './pro.js';
-import { PORTS } from './ports.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 
-const LOCAL = `http://127.0.0.1:${PORTS.LLM_PORT}`;
+/** Retired local llama-server origin — assert cloud paths never hit it. */
+const LOCAL = 'http://127.0.0.1:1316';
 
 function okJson(content) {
   return {
@@ -52,7 +52,7 @@ describe('analyzeWithAgentVision', () => {
     });
     expect(text).toBe('a calendar');
     expect(urls[0]).toBe(`${DOTTIE_PRO_BASE}/chat/completions`);
-    expect(urls.every((u) => !u.includes(`:${PORTS.LLM_PORT}`))).toBe(true);
+    expect(urls.every((u) => !u.includes(':1316'))).toBe(true);
     expect(fetchFn).toHaveBeenCalledTimes(1);
   });
 

@@ -5,9 +5,10 @@
  */
 
 import { DOTTIE_PRO_BASE, readRegistrationToken, proHeaders, configString } from './pro.js';
-import { PORTS } from './ports.js';
 
-const LOCAL_LLM = `http://127.0.0.1:${PORTS.LLM_PORT}`;
+/** Legacy local llama-server origin. The engine is gone; the guard below keeps
+ *  a stale config from silently pointing vision at a dead port. */
+const LOCAL_LLM = 'http://127.0.0.1:1316';
 
 /** @type {null|(() => Promise<object>|object)} */
 let chatConfigGetter = null;
