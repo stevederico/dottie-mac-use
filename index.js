@@ -1,5 +1,5 @@
 /**
- * dottie-mac-use — Mac hands tool catalog (JS half).
+ * dottie-mac-use — Mac tool catalog (JS half).
  *
  * AX / EventKit HTTP bridge lives in the app:
  *   client/Dottie/MacUseService.swift  (:1319)

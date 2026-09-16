@@ -1,5 +1,5 @@
 /**
- * Hands tool_runtime — in-process, never :1317.
+ * dottie-mac-use tool_runtime — in-process, never :1317.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { PORTS } from './ports.js';
@@ -32,7 +32,7 @@ describe('tool_runtime', () => {
     vi.unstubAllGlobals();
   });
 
-  it('lists Hands tools', () => {
+  it('lists dottie-mac-use tools', () => {
     const tools = listTools();
     expect(tools.some((t) => t.name === 'get_frontmost_app')).toBe(true);
   });

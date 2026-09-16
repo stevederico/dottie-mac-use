@@ -1,5 +1,5 @@
 /**
- * Hands vision via the calling chat agent (cloud-first).
+ * dottie-mac-use vision via the calling chat agent (cloud-first).
  * Package-owned — no gateway imports. Inject chat config via setChatConfigGetter
  * (gateway does this) or env: DOTTIE_CHAT_PROVIDER / DOTTIE_CHAT_API_KEY / DOTTIE_CHAT_MODEL.
  */
@@ -50,7 +50,7 @@ async function postChatCompletions({
   url, headers, model, messages, maxTokens = 1024, temperature, fetchFn = globalThis.fetch,
 }) {
   if (typeof url === 'string' && url.startsWith(LOCAL_LLM)) {
-    throw new Error('Hands vision must not call local llama (:1316) on cloud-first path');
+    throw new Error('dottie-mac-use vision must not call local llama (:1316) on cloud-first path');
   }
   const body = { model, max_tokens: maxTokens, messages };
   if (temperature !== undefined) body.temperature = temperature;
@@ -126,16 +126,16 @@ export async function analyzeWithAgentVision({
   const defaultVisionModel = configString('VISION_MODEL', 'grok-4.3');
 
   if (provider === 'local' || !provider) {
-    throw new Error('Local vision paused — use Pro or your xAI key for Hands vision');
+    throw new Error('Local vision paused — use Pro or your xAI key for dottie-mac-use vision');
   }
 
   if (provider === 'anthropic') {
-    if (!apiKey) throw new Error('Anthropic API key required for Hands vision');
+    if (!apiKey) throw new Error('Anthropic API key required for dottie-mac-use vision');
     return callAnthropicVision(apiKey, base64Image, question, model, fetchFn);
   }
 
   if (provider === 'openai') {
-    if (!apiKey) throw new Error('OpenAI API key required for Hands vision');
+    if (!apiKey) throw new Error('OpenAI API key required for dottie-mac-use vision');
     return postChatCompletions({
       url: 'https://api.openai.com/v1/chat/completions',
       headers: {
@@ -151,7 +151,7 @@ export async function analyzeWithAgentVision({
   }
 
   if (provider === 'xai') {
-    if (!apiKey) throw new Error('xAI API key required for Hands vision');
+    if (!apiKey) throw new Error('xAI API key required for dottie-mac-use vision');
     return postChatCompletions({
       url: 'https://api.x.ai/v1/chat/completions',
       headers: {
@@ -168,7 +168,7 @@ export async function analyzeWithAgentVision({
 
   if (provider === 'dottiepro') {
     const token = readRegistrationToken();
-    if (!token) throw new Error('Dottie Pro registration required for Hands vision');
+    if (!token) throw new Error('Dottie Pro registration required for dottie-mac-use vision');
     return postChatCompletions({
       url: `${DOTTIE_PRO_BASE}/chat/completions`,
       headers: proHeaders({
@@ -184,6 +184,6 @@ export async function analyzeWithAgentVision({
   }
 
   throw new Error(
-    `Hands vision unsupported for provider "${provider}" — switch to Pro or xAI (local llama not used)`
+    `dottie-mac-use vision unsupported for provider "${provider}" — switch to Pro or xAI (local llama not used)`
   );
 }

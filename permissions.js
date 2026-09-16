@@ -1,5 +1,5 @@
 /**
- * Hands permission scopes — package-owned (standalone).
+ * dottie-mac-use permission scopes — package-owned (standalone).
  * Gateway re-exports from tool_config.js for the agent loop.
  */
 

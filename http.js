@@ -1,13 +1,13 @@
 /**
- * dottie-mac-use HTTP — Hands tools in-process.
- * Optional: DOTTIE_HANDS_HTTP_PORT=1321 node http.js
+ * dottie-mac-use HTTP — tools in-process.
+ * Optional: DOTTIE_MAC_USE_HTTP_PORT=1321 node http.js
  */
 
 import http from 'node:http';
 import { pathToFileURL } from 'node:url';
 import { listTools, callTool } from './tool_runtime.js';
 
-export async function handleHandsRequest(req, res) {
+export async function handleMacUseRequest(req, res) {
   const url = new URL(req.url || '/', 'http://127.0.0.1');
   try {
     if (req.method === 'GET' && url.pathname === '/v1/tools') {
@@ -53,15 +53,15 @@ export async function handleHandsRequest(req, res) {
   }
 }
 
-export function createHandsServer() {
+export function createMacUseServer() {
   return http.createServer((req, res) => {
-    handleHandsRequest(req, res);
+    handleMacUseRequest(req, res);
   });
 }
 
-const port = Number(process.env.DOTTIE_HANDS_HTTP_PORT || 0);
+const port = Number(process.env.DOTTIE_MAC_USE_HTTP_PORT || 0);
 if (port > 0 && process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  createHandsServer().listen(port, '127.0.0.1', () => {
+  createMacUseServer().listen(port, '127.0.0.1', () => {
     process.stderr.write(`[dottie-mac-use] HTTP listening on 127.0.0.1:${port}\n`);
   });
 }

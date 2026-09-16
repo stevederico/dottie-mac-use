@@ -1,5 +1,5 @@
 /**
- * Hands vision_client — calling-agent vision, never local :1316 on cloud paths.
+ * dottie-mac-use vision_client — calling-agent vision, never local :1316 on cloud paths.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { analyzeWithAgentVision } from './vision_client.js';

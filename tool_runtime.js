@@ -1,5 +1,5 @@
 /**
- * Hands tool runtime — list/call customTools in-process (no :1317 rePOST).
+ * dottie-mac-use tool runtime — list/call customTools in-process (no :1317 rePOST).
  * Package-owned — no gateway imports.
  */
 
@@ -46,7 +46,7 @@ export function ensurePermissionReader() {
   });
 }
 
-/** MCP/HTTP tool descriptors from Hands customTools. */
+/** MCP/HTTP tool descriptors from dottie-mac-use customTools. */
 export function listTools() {
   ensurePermissionReader();
   return (customTools || []).map((t) => ({
@@ -59,7 +59,7 @@ export function listTools() {
 }
 
 /**
- * Execute a Hands tool by name.
+ * Execute a dottie-mac-use tool by name.
  * @param {string} name
  * @param {object} [args]
  * @returns {Promise<{success:boolean, data?:*, error?:string, requiredScope?:string}>}

@@ -9,7 +9,7 @@ Consumed by [dottie-desktop](https://github.com/stevederico/dottie-desktop) as a
 | Tools | `tools/` + `index.js` | JavaScript |
 | AX / EventKit HTTP `:1319` | `bin/dottie-mac-use-ax` (`native/`) | Swift |
 | MCP stdio | `mcp.js` | JavaScript |
-| HTTP | `http.js` (optional `DOTTIE_HANDS_HTTP_PORT`) | JavaScript |
+| HTTP | `http.js` (optional `DOTTIE_MAC_USE_HTTP_PORT`) | JavaScript |
 
 ## Setup
 
@@ -31,7 +31,7 @@ Binary resolve order (`ax_process.js`): `DOTTIE_MAC_USE_AX` env → `bin/dottie-
 **Ports / env:**
 - `DOTTIE_AX_PORT` (default **1319**)
 - `DOTTIE_MAC_USE_AX` (binary path override)
-- Optional HTTP: `DOTTIE_HANDS_HTTP_PORT`
+- Optional HTTP: `DOTTIE_MAC_USE_HTTP_PORT`
 - Vision: `DOTTIE_CHAT_PROVIDER` / `DOTTIE_CHAT_API_KEY` / `DOTTIE_CHAT_MODEL` (or inject `setChatConfigGetter`)
 
 **Callers:**
@@ -41,7 +41,7 @@ Binary resolve order (`ax_process.js`): `DOTTIE_MAC_USE_AX` env → `bin/dottie-
 ```bash
 npm run mcp
 # optional HTTP:
-DOTTIE_HANDS_HTTP_PORT=1321 node http.js
+DOTTIE_MAC_USE_HTTP_PORT=1321 node http.js
 ```
 
 ## Injectors (optional — gateway wires these)
