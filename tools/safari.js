@@ -1,6 +1,6 @@
 /**
  * Safari tools — list open tabs and drive the user's actual Safari window
- * (not headless Chrome, which is what the dotbot `browser_*` tools use).
+ * (not headless Chrome, which is what the agent-lib `browser_*` tools use).
  */
 
 import { logToolUse, runCommandSafe, escapeAppleScript, runAppleScript, tagDomain, axFetch } from './shared.js';

@@ -1,5 +1,5 @@
 /**
- * Task tool overrides (no ★dotbot import — uses context.taskStore only):
+ * Task tool overrides (no agent-lib import — uses context.taskStore only):
  * - `task_list` wraps results in a `_ui: { component: "list" }` envelope.
  * - `task_create` talks to taskStore directly with a sharper description.
  */

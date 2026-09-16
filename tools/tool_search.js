@@ -66,7 +66,7 @@ export const toolSearchDefinition = {
 
 /**
  * Build the tool_search instance for a given chat() invocation.
- * The execute closure mutates the live `liveTools` array so the next dotbot
+ * The execute closure mutates the live `liveTools` array so the next agent-lib
  * each chat turn includes the loaded tools in its toolDefs build.
  * Loaded tool names are also added to
  * `sessionLoadedSet` so the next user message in the same conversation
@@ -83,7 +83,7 @@ export const toolSearchDefinition = {
  * @param {Function} deps.getDomainTools - (domain, query) => Tool[]
  * @param {Function} deps.scopeForTool - (toolName) => permissionScope|null
  * @param {Object} deps.permissions - granted permission map { 'calendar.read': true, ... }
- * @param {Array} deps.liveTools - the array passed to dotbot.chatRaw, mutated in place
+ * @param {Array} deps.liveTools - the array passed to agent-lib.chatRaw, mutated in place
  * @param {Set<string>} deps.sessionLoadedSet - per-conversation cache of loaded tool names
  * @param {Function} [deps.onLoaded] - optional callback fired with ({domain, query, loadedNames, skippedScopes}) for telemetry/dev overlay
  */

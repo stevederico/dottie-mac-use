@@ -1,5 +1,5 @@
 /**
- * Custom web_search — local fetch of DuckDuckGo HTML (no browser / no ★dotbot).
+ * Custom web_search — local fetch of DuckDuckGo HTML (no browser / no agent-lib).
  * Top result pages fetched with the same SSRF-safe helpers as web_reader.
  */
 
