@@ -1,0 +1,38 @@
+{
+  "name": "dottie-mac-use",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "macOS tools + dottie-mac-use-ax CLI (:1319 AX/EventKit). Standalone MCP — no Dottie.app or gateway required.",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./tools/*": "./tools/*",
+    "./mcp.js": "./mcp.js",
+    "./http.js": "./http.js",
+    "./tool_runtime.js": "./tool_runtime.js",
+    "./vision_client.js": "./vision_client.js",
+    "./permissions.js": "./permissions.js",
+    "./ports.js": "./ports.js",
+    "./logger.js": "./logger.js",
+    "./ax_process.js": "./ax_process.js",
+    "./domains.js": "./domains.js"
+  },
+  "bin": {
+    "dottie-mac-use": "./mcp.js"
+  },
+  "scripts": {
+    "build:ax": "bash native/build.sh",
+    "mcp": "node mcp.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.29.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.4"
+  }
+}
