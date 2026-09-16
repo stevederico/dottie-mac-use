@@ -24,7 +24,6 @@ export function axBaseUrl() {
 export function resolveAxBinary() {
   if (process.env.DOTTIE_MAC_USE_AX) return process.env.DOTTIE_MAC_USE_AX;
   const candidates = [
-    path.join(__dirname, 'bin', 'dottie-mac-use-ax'),
     path.join(__dirname, 'native', '.build', 'dottie-mac-use-ax'),
   ];
   for (const p of candidates) {
@@ -49,7 +48,7 @@ async function healthOk(timeoutMs = 800) {
 function spawnAx(bin) {
   if (!fs.existsSync(bin)) {
     throw new Error(
-      `dottie-mac-use-ax not found at ${bin}. Run: bash backend/gateway/dottie-mac-use/native/build.sh`,
+      `dottie-mac-use-ax not found at ${bin}. Run: npm run build:ax`,
     );
   }
   const env = { ...process.env };

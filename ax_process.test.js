@@ -2,7 +2,7 @@
  * ax_process — resolve binary + health probe (no live spawn in CI).
  */
 import { describe, it, expect } from 'vitest';
-import fs from 'node:fs';
+import path from 'node:path';
 import { resolveAxBinary, axBaseUrl } from './ax_process.js';
 import { PORTS } from './ports.js';
 
@@ -11,10 +11,13 @@ describe('ax_process', () => {
     expect(axBaseUrl()).toContain(String(PORTS.AX_PORT));
   });
 
-  it('resolveAxBinary points at package bin when built', () => {
+  it('resolveAxBinary prefers DOTTIE_MAC_USE_AX or native/.build', () => {
     const bin = resolveAxBinary();
     expect(bin).toMatch(/dottie-mac-use-ax$/);
-    // Build artifact should exist after native/build.sh (committed or local).
-    expect(fs.existsSync(bin)).toBe(true);
+    if (process.env.DOTTIE_MAC_USE_AX) {
+      expect(bin).toBe(process.env.DOTTIE_MAC_USE_AX);
+    } else {
+      expect(bin).toContain(`${path.sep}native${path.sep}.build${path.sep}`);
+    }
   });
 });

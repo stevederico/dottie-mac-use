@@ -7,7 +7,7 @@ Consumed by [dottie-desktop](https://github.com/stevederico/dottie-desktop) as a
 | Half | Where | Lang |
 |---|---|---|
 | Tools | `tools/` + `index.js` | JavaScript |
-| AX / EventKit HTTP `:1319` | `bin/dottie-mac-use-ax` (`native/`) | Swift |
+| AX / EventKit HTTP `:1319` | `native/` → `.build/dottie-mac-use-ax` | Swift |
 | MCP stdio | `mcp.js` | JavaScript |
 | HTTP | `http.js` (optional `DOTTIE_MAC_USE_HTTP_PORT`) | JavaScript |
 
@@ -15,15 +15,15 @@ Consumed by [dottie-desktop](https://github.com/stevederico/dottie-desktop) as a
 
 ```bash
 npm install
-bash native/build.sh   # → bin/dottie-mac-use-ax (arm64)
+npm run build:ax   # → native/.build/dottie-mac-use-ax (arm64)
 ```
 
-Binary resolve order (`ax_process.js`): `DOTTIE_MAC_USE_AX` env → `bin/dottie-mac-use-ax` → `native/.build/dottie-mac-use-ax`.
+Binary resolve order (`ax_process.js`): `DOTTIE_MAC_USE_AX` env → `native/.build/dottie-mac-use-ax`.
 
 ## Standalone contract
 
 **Runtime:**
-- `bin/dottie-mac-use-ax` (build: `npm run build:ax`)
+- `native/.build/dottie-mac-use-ax` (build: `npm run build:ax`)
 - Accessibility TCC granted to **that binary** (System Settings → Privacy → Accessibility)
 - `~/.dottie/agent_token` (CLI mints if missing)
 - Permission scopes in `~/.dottie/agent.db` when gating tools

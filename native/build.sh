@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Build standalone dottie-mac-use-ax → ../bin/dottie-mac-use-ax
+# Build standalone dottie-mac-use-ax → .build/dottie-mac-use-ax
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-OUT="$ROOT/../bin/dottie-mac-use-ax"
+OUT="$ROOT/.build/dottie-mac-use-ax"
 mkdir -p "$(dirname "$OUT")"
 SOURCES=(
   "$ROOT/Sources/Stubs.swift"
