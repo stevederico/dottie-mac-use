@@ -4,8 +4,8 @@
  *
  * The LLM calls `tool_search({domain})` when its current tool list is
  * insufficient. agent_bridge.js wires up the actual execute closure with
- * access to the live tools array (which dotbot's agentLoop re-reads on each
- * iteration — see lib/agent-lib/core/agent.js). Pushing
+ * access to the live tools array (which chatGrokNative re-reads each turn).
+ * Pushing
  * onto that array makes the new tools visible to the *next* LLM turn within
  * the same chat() invocation. Loaded names also persist across turns of the
  * same conversationId via the session cache in agent_bridge.js.
@@ -67,8 +67,8 @@ export const toolSearchDefinition = {
 /**
  * Build the tool_search instance for a given chat() invocation.
  * The execute closure mutates the live `liveTools` array so the next dotbot
- * agentLoop iteration includes the loaded tools in its toolDefs build (see
- * dotbot/core/agent.js:71). Loaded tool names are also added to
+ * each chat turn includes the loaded tools in its toolDefs build.
+ * Loaded tool names are also added to
  * `sessionLoadedSet` so the next user message in the same conversation
  * pre-loads them without a second tool_search hop.
  *
