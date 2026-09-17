@@ -170,7 +170,7 @@ export function tagDomain(tools, domain) {
  * errors leak stack traces into the model context and make failures
  * indistinguishable from crashes.
  *
- * @param {string} name - Tool name (e.g. 'mail_send')
+ * @param {string} name - Tool name (e.g. 'mac_mail_send')
  * @param {string} code - Short uppercase code (e.g. 'VALIDATION', 'EXECUTION', 'PERMISSION')
  * @param {string} message - Human-readable detail
  * @returns {string}
@@ -357,7 +357,7 @@ export function to24Hour(hour, meridiem) {
  * Parse a clock time ("7am", "3:30pm", "15:00") into the next future Date that
  * matches it — today if still ahead, otherwise tomorrow. Returns null on an
  * unparseable or out-of-range value rather than letting setHours roll over.
- * Shared by reminders (parseDateTime) and the alarm tool (alarm_set).
+ * Shared by reminders (parseDateTime) and the alarm tool (mac_alarm_set).
  * @param {string} timeStr
  * @returns {Date|null}
  */

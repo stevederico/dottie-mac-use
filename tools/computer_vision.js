@@ -1,6 +1,6 @@
 /**
  * Computer-vision tooling — the shared "see the screen, click the thing"
- * pipeline used by the screen_click tool.
+ * pipeline used by the mac_screen_click tool.
  *
  * Flow: resolve a target app's window bounds (in GLOBAL POINTS) via the
  * in-process AX service (:1319) → region-capture exactly that window to a PNG →
@@ -11,7 +11,7 @@
  * Coordinate math: /ax/window_info returns bounds in POINTS and the vision
  * model returns box_2d normalized to 0-1000, so the click point is simply:
  *   globalX = winX + (nx/1000) * winW ;  globalY = winY + (ny/1000) * winH
- * No screenshot pixel dimensions are involved in the math — a capture is taken
+ * No mac_screenshot pixel dimensions are involved in the math — a capture is taken
  * only to feed the model.
  */
 
@@ -212,7 +212,7 @@ export async function locateAndClick({ bundleId, appName, targetPrompt, clickCou
 
     // 5. Ask the calling agent (Grok/Pro) to locate the target — not local llama.
     const prompt =
-      `Locate ${targetPrompt} in this screenshot. Respond ONLY with its bounding box ` +
+      `Locate ${targetPrompt} in this mac_screenshot. Respond ONLY with its bounding box ` +
       `as box_2d [ymin, xmin, ymax, xmax].`;
     const text = await analyzeWithAgentVision({
       base64Image: base64,

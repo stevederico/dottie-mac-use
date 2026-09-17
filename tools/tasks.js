@@ -1,7 +1,7 @@
 /**
- * Task tool overrides (no agent-lib import — uses context.taskStore only):
- * - `task_list` wraps results in a `_ui: { component: "list" }` envelope.
- * - `task_create` talks to taskStore directly with a sharper description.
+ * Task tool overrides (no dottie-memory import — uses context.taskStore only):
+ * - `mac_task_list` wraps results in a `_ui: { component: "list" }` envelope.
+ * - `mac_task_create` talks to taskStore directly with a sharper description.
  */
 
 import { toolOk, tagDomain } from './shared.js';
@@ -14,13 +14,12 @@ const STATUS_ICON = {
 
 export const tasksTools = tagDomain([
   {
-    name: 'task_create',
+    name: 'mac_task_create',
     description:
       'Create a task / todo / thing-to-do for the user. ' +
       'Use this for ANY "create a task", "add a todo", "remind me to do X", "I need to X" request. ' +
-      'NEVER save tasks as files via workspace_write — tasks belong here. ' +
-      'Supports optional steps, priority, deadline, and category. ' +
-      'Use mode="auto" for autonomous execution where steps run sequentially without user prompting.',
+      'NEVER save tasks as files via mac_workspace_write — tasks belong here. ' +
+      'Supports optional steps, priority, deadline, and category.',
     parameters: {
       type: 'object',
       properties: {
@@ -69,10 +68,7 @@ export const tasksTools = tagDomain([
         const taskId = task.id || task._id?.toString();
 
         return `Task created: "${input.description}" (ID: ${taskId})\n` +
-          `Mode: ${task.mode}, Priority: ${task.priority}, Steps: ${task.steps.length}` +
-          (task.mode === 'auto' && task.steps.length > 0
-            ? `\n\nCall task_work with task_id "${taskId}" to start executing steps automatically.`
-            : '');
+          `Mode: ${task.mode}, Priority: ${task.priority}, Steps: ${task.steps.length}`;
       } catch (err) {
         return `Error creating task: ${err.message}`;
       }
@@ -80,11 +76,11 @@ export const tasksTools = tagDomain([
   },
 
   {
-    name: 'task_list',
+    name: 'mac_task_list',
     description:
       'List the user\'s tasks / todos. Use this for "list my tasks", "what are my todos", "show my tasks", ' +
       '"what do I need to do". Optionally filter by status or category. ' +
-      'NEVER read tasks from files via workspace_read — tasks live here.',
+      'NEVER read tasks from files via mac_workspace_read — tasks live here.',
     parameters: {
       type: 'object',
       properties: {
@@ -111,7 +107,7 @@ export const tasksTools = tagDomain([
       if (tasks.length === 0) {
         return input.status || input.category
           ? 'No tasks found matching filters.'
-          : 'No tasks yet. Create one with task_create.';
+          : 'No tasks yet. Create one with mac_task_create.';
       }
 
       const text = tasks.map((g) => {

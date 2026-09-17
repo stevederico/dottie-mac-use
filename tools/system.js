@@ -15,7 +15,7 @@ import { createTool } from './shared.js';
 
 export const systemTools = tagDomain([
   createTool({
-    name: 'dark_mode_toggle',
+    name: 'mac_dark_mode_toggle',
     description: 'Toggle dark/light mode.',
     parameters: {
       type: 'object',
@@ -37,7 +37,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'do_not_disturb',
+    name: 'mac_do_not_disturb',
     description: 'Toggle Do Not Disturb.',
     parameters: {
       type: 'object',
@@ -63,7 +63,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'hide_all_apps',
+    name: 'mac_hide_all_apps',
     description: 'Hide all apps.',
     parameters: {
       type: 'object',
@@ -81,7 +81,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'show_desktop',
+    name: 'mac_show_desktop',
     description: 'Show desktop.',
     parameters: {
       type: 'object',
@@ -101,7 +101,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'get_frontmost_url',
+    name: 'mac_get_frontmost_url',
     description: 'Get URL from frontmost browser tab.',
     parameters: {
       type: 'object',
@@ -151,7 +151,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'lock_screen',
+    name: 'mac_lock_screen',
     description: 'Lock the screen.',
     parameters: {
       type: 'object',
@@ -169,7 +169,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'sleep_display',
+    name: 'mac_sleep_display',
     description: 'Put display to sleep.',
     parameters: {
       type: 'object',
@@ -185,7 +185,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'system_sleep',
+    name: 'mac_system_sleep',
     description: 'Put computer to sleep.',
     parameters: {
       type: 'object',
@@ -201,7 +201,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'wifi_toggle',
+    name: 'mac_wifi_toggle',
     description: 'Toggle Wi-Fi.',
     parameters: {
       type: 'object',
@@ -232,7 +232,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'bluetooth_toggle',
+    name: 'mac_bluetooth_toggle',
     description: 'Toggle Bluetooth.',
     parameters: {
       type: 'object',
@@ -270,7 +270,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'get_system_info',
+    name: 'mac_get_system_info',
     description: 'Get system status.',
     directReturn: true,
     parameters: {
@@ -320,7 +320,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'empty_trash',
+    name: 'mac_empty_trash',
     description: 'Empty Trash.',
     parameters: {
       type: 'object',
@@ -338,7 +338,7 @@ export const systemTools = tagDomain([
     },
   }),
   createTool({
-    name: 'open_system_preferences',
+    name: 'mac_open_system_preferences',
     description: 'Open System Settings.',
     parameters: {
       type: 'object',

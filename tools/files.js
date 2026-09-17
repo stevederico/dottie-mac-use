@@ -1,5 +1,10 @@
 /**
  * Files/Finder tools — recent files, search, and tag management.
+ *
+ * TODO: add mac_file_move — move/rename a file on disk (Finder/POSIX).
+ * Replaces removed gateway_file_move (virtual FS).
+ * TODO: add mac_folder_create — create a folder on disk (Finder/POSIX).
+ * Replaces removed gateway_folder_create (virtual FS).
  */
 
 import { createTool } from './shared.js';
@@ -7,7 +12,7 @@ import { runCommandSafe, sanitizeShellArg, tagDomain } from './shared.js';
 
 export const filesTools = tagDomain([
   createTool({
-    name: 'files_recent',
+    name: 'mac_files_recent',
     description: 'List recently opened files from Finder',
     parameters: {
       type: 'object',
@@ -60,7 +65,7 @@ export const filesTools = tagDomain([
   }),
 
   createTool({
-    name: 'files_search',
+    name: 'mac_files_search',
     description: 'Search for files.',
     parameters: {
       type: 'object',
@@ -127,7 +132,7 @@ export const filesTools = tagDomain([
   }),
 
   createTool({
-    name: 'files_tags',
+    name: 'mac_files_tags',
     description: 'Get or set Finder tags on a file',
     parameters: {
       type: 'object',

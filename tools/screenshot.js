@@ -12,7 +12,7 @@ import { analyzeWithAgentVision } from '../vision_client.js';
 
 export const screenshotTools = tagDomain([
   createTool({
-    name: 'screenshot',
+    name: 'mac_screenshot',
     description: 'Capture the screen.',
     parameters: {
       type: 'object',
@@ -51,20 +51,20 @@ export const screenshotTools = tagDomain([
         const result = `Screenshot saved: ~/Desktop/${filename}`;
         return result;
       } catch (error) {
-        const result = `Failed to take screenshot: ${error.message}`;
+        const result = `Failed to take mac_screenshot: ${error.message}`;
         return result;
       }
     },
   }),
   createTool({
-    name: 'screenshot_and_analyze',
-    description: 'Take a screenshot and analyze the VISUAL CONTENT with AI vision. Use this when you need to actually SEE what is displayed — code, text, images, designs, errors, UI elements, charts, documents. This is different from window_list which only shows window titles. Use screenshot_and_analyze when the user asks to "look at", "see", "read", "review", "check", or "help with" something visible on screen, or when they reference "this" without providing content.',
+    name: 'mac_screenshot_and_analyze',
+    description: 'Take a mac_screenshot and analyze the VISUAL CONTENT with AI vision. Use this when you need to actually SEE what is displayed — code, text, images, designs, errors, UI elements, charts, documents. This is different from mac_window_list which only shows window titles. Use mac_screenshot_and_analyze when the user asks to "look at", "see", "read", "review", "check", or "help with" something visible on screen, or when they reference "this" without providing content.',
     parameters: {
       type: 'object',
       properties: {
         question: {
           type: 'string',
-          description: 'What to analyze or look for in the screenshot. Default: "Describe what you see on screen."'
+          description: 'What to analyze or look for in the mac_screenshot. Default: "Describe what you see on screen."'
         },
         type: {
           type: 'string',
@@ -95,11 +95,11 @@ export const screenshotTools = tagDomain([
         }
 
         const analysis = await analyzeWithAgentVision({ base64Image, question });
-        logToolUse('screenshot_and_analyze', { question, type: captureType }, analysis.substring(0, 200) + '...');
+        logToolUse('mac_screenshot_and_analyze', { question, type: captureType }, analysis.substring(0, 200) + '...');
         return analysis;
       } catch (error) {
         const result = `Failed to analyze screen: ${error.message}`;
-        logToolUse('screenshot_and_analyze', input, result);
+        logToolUse('mac_screenshot_and_analyze', input, result);
         return result;
       }
     },

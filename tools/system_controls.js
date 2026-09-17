@@ -49,7 +49,7 @@ async function setVolume(level) {
 export const systemControlsTools = tagDomain([
   // Brightness
   createTool({
-    name: 'brightness_up',
+    name: 'mac_brightness_up',
     description: 'Increase screen brightness.',
     directReturn: true,
     parameters: {
@@ -74,7 +74,7 @@ export const systemControlsTools = tagDomain([
     },
   }),
   createTool({
-    name: 'brightness_down',
+    name: 'mac_brightness_down',
     description: 'Decrease screen brightness.',
     directReturn: true,
     parameters: {
@@ -100,7 +100,7 @@ export const systemControlsTools = tagDomain([
   }),
   // Volume
   createTool({
-    name: 'volume_set',
+    name: 'mac_volume_set',
     description: 'Set volume level.',
     directReturn: true,
     parameters: {
@@ -136,7 +136,7 @@ export const systemControlsTools = tagDomain([
     },
   }),
   createTool({
-    name: 'volume_up',
+    name: 'mac_volume_up',
     description: 'Volume up.',
     directReturn: true,
     parameters: {
@@ -156,7 +156,7 @@ export const systemControlsTools = tagDomain([
     },
   }),
   createTool({
-    name: 'volume_down',
+    name: 'mac_volume_down',
     description: 'Volume down.',
     directReturn: true,
     parameters: {
@@ -176,7 +176,7 @@ export const systemControlsTools = tagDomain([
     },
   }),
   createTool({
-    name: 'volume_mute',
+    name: 'mac_volume_mute',
     description: 'Toggle mute.',
     directReturn: true,
     parameters: {
@@ -212,7 +212,7 @@ export const systemControlsTools = tagDomain([
     },
   }),
   createTool({
-    name: 'volume_get',
+    name: 'mac_volume_get',
     description: 'Get volume level.',
     directReturn: true,
     parameters: {

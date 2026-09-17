@@ -23,7 +23,7 @@ import { TOOL_SEARCH_DOMAINS } from '../domains.js';
  * they're skipped entirely — the model never learns the capability exists,
  * instead of offering it and failing. Cloud vision providers keep them.
  */
-export const VISION_TOOL_NAMES = new Set(['screenshot_and_analyze']);
+export const VISION_TOOL_NAMES = new Set(['mac_screenshot_and_analyze']);
 
 /**
  * Static definition (LLM-visible schema). Execute is added by agent_bridge.js
@@ -33,14 +33,14 @@ export const toolSearchDefinition = {
   name: 'tool_search',
   description:
     'Router for all tools. This is the ONLY tool you have until you call it — every action ' +
-    '(send a message, read clipboard, take a screenshot, list tasks, set the volume, etc.) ' +
+    '(send a message, read clipboard, take a mac_screenshot, list tasks, set the volume, etc.) ' +
     'requires loading the right domain first. ALWAYS call this on the first turn whenever the ' +
     'user asks you to do anything; never reply "I don\'t have a tool for that" without searching first. ' +
     'Domains and example user phrases: ' +
     'comms (text someone, imessage, sms, email, mail, contacts, phone), ' +
     'schedule (calendar, event, meeting, what\'s on my calendar, reminder, todo, timer, alarm), ' +
-    'media (music, spotify, play song, pause, photo, camera, screenshot, take a picture), ' +
-    'info (open a website/URL/link, open stripe/github/docs in the browser, open Grok Hub / hub.grok.me / Grok Theft Auto / hub apps via hub_open not the browser, note, file, folder, safari tabs, chrome, what url is open, current page, map, location, weather, web search, google), ' +
+    'media (music, spotify, play song, pause, photo, camera, mac_screenshot, take a picture), ' +
+    'info (open a website/URL/link, open stripe/github/docs in the browser, open Grok Hub / hub.grok.me / Grok Theft Auto / hub apps via mac_hub_open not the browser, note, file, folder, safari tabs, chrome, what url is open, current page, map, location, weather, web search, google), ' +
     'system (dark mode, light mode, toggle theme, volume, brightness, wifi, bluetooth, sleep, lock screen, hide windows, show desktop, open an app, frontmost app, what app, switch app), ' +
     'computer_use (click button, type into other app, keystroke, automate, move mouse, scroll, fill form), ' +
     'dev (code, file edit, repo, git, terminal, shell command), ' +
@@ -66,7 +66,7 @@ export const toolSearchDefinition = {
 
 /**
  * Build the tool_search instance for a given chat() invocation.
- * The execute closure mutates the live `liveTools` array so the next agent-lib
+ * The execute closure mutates the live `liveTools` array so the next dottie-memory
  * each chat turn includes the loaded tools in its toolDefs build.
  * Loaded tool names are also added to
  * `sessionLoadedSet` so the next user message in the same conversation
@@ -83,7 +83,7 @@ export const toolSearchDefinition = {
  * @param {Function} deps.getDomainTools - (domain, query) => Tool[]
  * @param {Function} deps.scopeForTool - (toolName) => permissionScope|null
  * @param {Object} deps.permissions - granted permission map { 'calendar.read': true, ... }
- * @param {Array} deps.liveTools - the array passed to agent-lib.chatRaw, mutated in place
+ * @param {Array} deps.liveTools - the array passed to dottie-memory.chatRaw, mutated in place
  * @param {Set<string>} deps.sessionLoadedSet - per-conversation cache of loaded tool names
  * @param {Function} [deps.onLoaded] - optional callback fired with ({domain, query, loadedNames, skippedScopes}) for telemetry/dev overlay
  */

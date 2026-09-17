@@ -2,8 +2,8 @@
  * Raw input primitives — low-level mouse/keyboard control via the AX service.
  * These post real HID events: coordinates are GLOBAL SCREEN POINTS (top-left
  * origin) and keyboard events land in whatever app currently has focus. They
- * are the base layer under the AX tools — prefer ax_click/ax_fill (element-
- * targeted, focus-preserving) whenever the app has a usable ax_tree.
+ * are the base layer under the AX tools — prefer mac_ax_click/mac_ax_fill (element-
+ * targeted, focus-preserving) whenever the app has a usable mac_ax_tree.
  */
 
 import { logToolUse, tagDomain, axFetch, createTool } from './shared.js';
@@ -12,9 +12,9 @@ const post = (route, body) => axFetch(route, { method: 'POST', body: JSON.string
 
 export const inputTools = tagDomain([
   createTool({
-    name: 'mouse_move',
+    name: 'mac_mouse_move',
     description:
-      'Move the mouse cursor. Absolute: pass x and y (global points, origin top-left of the main display). Relative: pass dx and/or dy to nudge from where the cursor is now — negative dx is left, negative dy is up. Relative is what voice commands like "move left a bit" need, since you are not told the current cursor position. Returns the resulting position and the main display size, so after one call you can aim at regions ("top-right" ≈ x: width-40, y: 40) without a screenshot. Movement is clamped to the main display.',
+      'Move the mouse cursor. Absolute: pass x and y (global points, origin top-left of the main display). Relative: pass dx and/or dy to nudge from where the cursor is now — negative dx is left, negative dy is up. Relative is what voice commands like "move left a bit" need, since you are not told the current cursor position. Returns the resulting position and the main display size, so after one call you can aim at regions ("top-right" ≈ x: width-40, y: 40) without a mac_screenshot. Movement is clamped to the main display.',
     parameters: {
       type: 'object',
       properties: {
@@ -35,15 +35,15 @@ export const inputTools = tagDomain([
         return await post('/ax/mouse_move', { x: input.x, y: input.y, dx: input.dx, dy: input.dy });
       } catch (error) {
         const msg = `Failed to move mouse: ${error.message}`;
-        logToolUse('mouse_move', input, msg);
+        logToolUse('mac_mouse_move', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'mouse_click',
+    name: 'mac_mouse_click',
     description:
-      'Click at a global screen coordinate (points), or at the CURRENT cursor position when x/y are omitted (e.g. after mouse_move). button: left (default), right (context menu), or middle. clickCount 2 = double-click. This is a real HID click on whatever is under the point — prefer ax_click when the app has a usable ax_tree.',
+      'Click at a global screen coordinate (points), or at the CURRENT cursor position when x/y are omitted (e.g. after mac_mouse_move). button: left (default), right (context menu), or middle. clickCount 2 = double-click. This is a real HID click on whatever is under the point — prefer mac_ax_click when the app has a usable mac_ax_tree.',
     parameters: {
       type: 'object',
       properties: {
@@ -66,13 +66,13 @@ export const inputTools = tagDomain([
         return await post('/ax/mouse_click', body);
       } catch (error) {
         const msg = `Failed to click: ${error.message}`;
-        logToolUse('mouse_click', input, msg);
+        logToolUse('mac_mouse_click', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'mouse_drag',
+    name: 'mac_mouse_drag',
     description:
       'Drag with the left mouse button from one global screen coordinate to another (points) — for moving files, sliders, selections, or window edges. Posts a real HID drag with interpolated movement (~350ms).',
     parameters: {
@@ -92,15 +92,15 @@ export const inputTools = tagDomain([
         return await post('/ax/mouse_drag', { fromX: input.fromX, fromY: input.fromY, toX: input.toX, toY: input.toY });
       } catch (error) {
         const msg = `Failed to drag: ${error.message}`;
-        logToolUse('mouse_drag', input, msg);
+        logToolUse('mac_mouse_drag', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'keyboard_type',
+    name: 'mac_keyboard_type',
     description:
-      'Type text into whatever app currently has keyboard focus (raw unicode injection — supports any characters, no modifier combos). Click or mouse_click a field first to focus it. For a specific app in the background use ax_fill; for shortcuts/chords use key_event or ax_press.',
+      'Type text into whatever app currently has keyboard focus (raw unicode injection — supports any characters, no modifier combos). Click or mac_mouse_click a field first to focus it. For a specific app in the background use mac_ax_fill; for shortcuts/chords use mac_key_event or mac_ax_press.',
     parameters: {
       type: 'object',
       properties: {
@@ -115,15 +115,15 @@ export const inputTools = tagDomain([
         return await post('/ax/keyboard_type', { text: input.text });
       } catch (error) {
         const msg = `Failed to type: ${error.message}`;
-        logToolUse('keyboard_type', input, msg);
+        logToolUse('mac_keyboard_type', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'key_event',
+    name: 'mac_key_event',
     description:
-      'Send a raw key event to the currently focused app. direction "press" (default) = down+up; "down"/"up" hold and release a key separately (e.g. hold shift while clicking). Supports modifiers (cmd, shift, opt, ctrl) and keys a-z, 0-9, return, tab, space, delete, escape, arrows, f1-f15. Destructive chords (cmd+q, cmd+w, cmd+delete) ask for confirmation. For app-targeted shortcuts that should not depend on focus, prefer ax_press.',
+      'Send a raw key event to the currently focused app. direction "press" (default) = down+up; "down"/"up" hold and release a key separately (e.g. hold shift while clicking). Supports modifiers (cmd, shift, opt, ctrl) and keys a-z, 0-9, return, tab, space, delete, escape, arrows, f1-f15. Destructive chords (cmd+q, cmd+w, cmd+delete) ask for confirmation. For app-targeted shortcuts that should not depend on focus, prefer mac_ax_press.',
     parameters: {
       type: 'object',
       properties: {
@@ -144,7 +144,7 @@ export const inputTools = tagDomain([
         return await post('/ax/key_event', body);
       } catch (error) {
         const msg = `Failed to send key event: ${error.message}`;
-        logToolUse('key_event', input, msg);
+        logToolUse('mac_key_event', input, msg);
         throw new Error(msg);
       }
     },

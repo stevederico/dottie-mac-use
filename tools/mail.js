@@ -7,7 +7,7 @@ import { createTool } from './shared.js';
 
 export const mailTools = tagDomain([
   createTool({
-    name: 'mail_list',
+    name: 'mac_mail_list',
     description: 'List recent emails.',
     directReturn: true,
     parameters: {
@@ -89,7 +89,7 @@ export const mailTools = tagDomain([
   }),
 
   createTool({
-    name: 'mail_read',
+    name: 'mac_mail_read',
     description: 'Read an email.',
     parameters: {
       type: 'object',
@@ -150,7 +150,7 @@ export const mailTools = tagDomain([
   }),
 
   createTool({
-    name: 'mail_send',
+    name: 'mac_mail_send',
     description: 'Send an email.',
     requiresPermission: 'mail.send',
     requiresConfirmation: true,
@@ -186,7 +186,7 @@ export const mailTools = tagDomain([
         // dialog the message could never actually be sent.
         const preview = `${body.substring(0, 100)}${body.length > 100 ? '...' : ''}`;
         return confirmTool({
-          toolName: 'mail_send',
+          toolName: 'mac_mail_send',
           input: { to: input.to, subject: input.subject, body: input.body },
           title: `Send email to ${input.to}?`,
           message: `Subject: ${subject}${preview ? `\n${preview}` : ''}`,

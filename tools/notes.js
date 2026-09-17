@@ -7,7 +7,7 @@ import { createTool } from './shared.js';
 
 export const notesTools = tagDomain([
   createTool({
-    name: 'notes_list',
+    name: 'mac_notes_list',
     description: 'List notes.',
     directReturn: true,
     parameters: {
@@ -85,7 +85,7 @@ export const notesTools = tagDomain([
   }),
 
   createTool({
-    name: 'notes_read',
+    name: 'mac_notes_read',
     description: 'Read a note.',
     parameters: {
       type: 'object',
@@ -141,7 +141,7 @@ export const notesTools = tagDomain([
   }),
 
   createTool({
-    name: 'notes_create',
+    name: 'mac_notes_create',
     description: 'Create a note.',
     directReturn: true,
     parameters: {

@@ -9,7 +9,7 @@ import { createTool } from './shared.js';
 
 export const imessageTools = tagDomain([
   createTool({
-    name: 'imessage_send',
+    name: 'mac_imessage_send',
     description: 'Send a text message.',
     requiresConfirmation: true,
     _internalParams: ['confirmed'],
@@ -43,7 +43,7 @@ export const imessageTools = tagDomain([
       if (!input.confirmed) {
         const preview = input.message.length > 100 ? input.message.substring(0, 100) + '...' : input.message;
         return confirmTool({
-          toolName: 'imessage_send',
+          toolName: 'mac_imessage_send',
           input: { recipient: input.recipient, message: input.message },
           title: `Send iMessage to ${input.recipient}?`,
           message: preview,
@@ -83,13 +83,13 @@ export const imessageTools = tagDomain([
 
           if (phoneResult.trim() === 'NOT_FOUND') {
             const result = `Contact "${input.recipient}" not found in your address book.`;
-            logToolUse('imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
+            logToolUse('mac_imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
             return result;
           }
 
           if (phoneResult.trim() === 'NO_PHONE') {
             const result = `Contact "${input.recipient}" has no phone number.`;
-            logToolUse('imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
+            logToolUse('mac_imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
             return result;
           }
 
@@ -109,7 +109,7 @@ export const imessageTools = tagDomain([
         await runAppleScript(sendScript);
 
         const result = `Message sent to ${input.recipient}.`;
-        logToolUse('imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
+        logToolUse('mac_imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
         return result;
       } catch (error) {
         // Try alternative method using buddy by phone number
@@ -124,11 +124,11 @@ export const imessageTools = tagDomain([
           await runAppleScript(altScript);
 
           const result = `Message sent to ${input.recipient}.`;
-          logToolUse('imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
+          logToolUse('mac_imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
           return result;
         } catch (altError) {
           const result = `Failed to send message: ${error.message}. Make sure Messages.app is set up and the recipient is valid.`;
-          logToolUse('imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
+          logToolUse('mac_imessage_send', { recipient: input.recipient, message: '[redacted]' }, result);
           return result;
         }
       }
@@ -136,7 +136,7 @@ export const imessageTools = tagDomain([
   }),
 
   createTool({
-    name: 'imessage_read',
+    name: 'mac_imessage_read',
     description: 'Read recent messages from a contact or all recent messages. Use this when the user says "read my messages", "what did [name] say", "check messages from [name]", "any new messages?", or "read texts".',
     parameters: {
       type: 'object',
@@ -208,7 +208,7 @@ export const imessageTools = tagDomain([
           const noMsgResult = input.contact
             ? `No recent messages found from "${input.contact}".`
             : 'No recent messages found.';
-          logToolUse('imessage_read', input, noMsgResult);
+          logToolUse('mac_imessage_read', input, noMsgResult);
           return noMsgResult;
         }
 
@@ -216,7 +216,7 @@ export const imessageTools = tagDomain([
           ? `Recent messages with ${input.contact}:\n${result}`
           : `Recent messages:\n${result}`;
 
-        logToolUse('imessage_read', input, `Retrieved ${limit} messages`);
+        logToolUse('mac_imessage_read', input, `Retrieved ${limit} messages`);
         return formattedResult;
       } catch (error) {
         // When a specific contact was requested we must NOT fall back to the
@@ -224,7 +224,7 @@ export const imessageTools = tagDomain([
         // messages (the original privacy bug). Surface the error instead.
         if (input.contact) {
           const errorResult = `Couldn't read messages from "${input.contact}": ${error.message}. You may need to grant Full Disk Access to Dottie in System Settings > Privacy & Security.`;
-          logToolUse('imessage_read', input, errorResult);
+          logToolUse('mac_imessage_read', input, errorResult);
           return errorResult;
         }
         // Fallback: Try AppleScript method (more limited) — only for the
@@ -248,11 +248,11 @@ export const imessageTools = tagDomain([
           const asResult = await runAppleScript(asScript);
 
           const formattedResult = `Recent messages:\n${asResult}`;
-          logToolUse('imessage_read', input, 'Retrieved via AppleScript');
+          logToolUse('mac_imessage_read', input, 'Retrieved via AppleScript');
           return formattedResult;
         } catch (asError) {
           const errorResult = `Failed to read messages: ${error.message}. You may need to grant Full Disk Access to the terminal/app in System Settings > Privacy & Security.`;
-          logToolUse('imessage_read', input, errorResult);
+          logToolUse('mac_imessage_read', input, errorResult);
           return errorResult;
         }
       }
@@ -260,7 +260,7 @@ export const imessageTools = tagDomain([
   }),
 
   createTool({
-    name: 'imessage_reply',
+    name: 'mac_imessage_reply',
     description: 'Reply to the most recent message in a conversation. Use this when the user says "reply to that", "respond to that message", "reply saying...", or "tell them...". Gets the most recent chat and sends a reply.',
     requiresConfirmation: true,
     _internalParams: ['confirmed'],
@@ -283,13 +283,13 @@ export const imessageTools = tagDomain([
       required: ['message'],
     },
     execute: async (input, signal, context) => {
-      // Require confirmation before sending (see imessage_send for why this
+      // Require confirmation before sending (see mac_imessage_send for why this
       // routes through confirmTool rather than a plain re-call prompt).
       if (!input.confirmed) {
         const preview = input.message.length > 100 ? input.message.substring(0, 100) + '...' : input.message;
         const target = input.contact || 'most recent conversation';
         return confirmTool({
-          toolName: 'imessage_reply',
+          toolName: 'mac_imessage_reply',
           input: { message: input.message, contact: input.contact },
           title: `Reply to ${target}?`,
           message: preview,
@@ -319,11 +319,11 @@ export const imessageTools = tagDomain([
           `;
 
         const result = await runAppleScript(replyScript);
-        logToolUse('imessage_reply', { message: '[redacted]', contact: input.contact }, result);
+        logToolUse('mac_imessage_reply', { message: '[redacted]', contact: input.contact }, result);
         return result;
       } catch (error) {
         const result = `Failed to send reply: ${error.message}`;
-        logToolUse('imessage_reply', { message: '[redacted]', contact: input.contact }, result);
+        logToolUse('mac_imessage_reply', { message: '[redacted]', contact: input.contact }, result);
         return result;
       }
     },

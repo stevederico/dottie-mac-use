@@ -1,6 +1,6 @@
 /**
- * Custom web_search — local fetch of DuckDuckGo HTML (no browser / no agent-lib).
- * Top result pages fetched with the same SSRF-safe helpers as web_reader.
+ * Custom mac_web_search — local fetch of DuckDuckGo HTML (no browser / no dottie-memory).
+ * Top result pages fetched with the same SSRF-safe helpers as mac_web_reader.
  */
 
 import { logToolUse, tagDomain, createTool } from './shared.js';
@@ -11,7 +11,7 @@ const TOP_TO_FETCH = 2;
 
 export const webTools = tagDomain([
   createTool({
-    name: 'web_search',
+    name: 'mac_web_search',
     description:
       'Search the web for current information — flight status, news, prices, scores, anything that changes. Returns a concise summary plus the top result links. Runs entirely on this device. Use this for any "what is", "how much", "when does", or "today/now/current" question that the model does not already know the answer to.',
     parameters: {
@@ -27,8 +27,8 @@ export const webTools = tagDomain([
     execute: async (input, signal) => {
       const query = String(input?.query ?? '').trim();
       if (!query) {
-        const msg = 'web_search requires a non-empty query';
-        logToolUse('web_search', input, msg);
+        const msg = 'mac_web_search requires a non-empty query';
+        logToolUse('mac_web_search', input, msg);
         throw new Error(msg);
       }
       try {
@@ -63,11 +63,11 @@ export const webTools = tagDomain([
           const { text } = htmlToText(html);
           result = text.slice(0, 4000).trim() || 'No results returned.';
         }
-        logToolUse('web_search', input, `${result.slice(0, 200)}…`);
+        logToolUse('mac_web_search', input, `${result.slice(0, 200)}…`);
         return result;
       } catch (error) {
-        const msg = `web_search failed: ${error.message}`;
-        logToolUse('web_search', input, msg);
+        const msg = `mac_web_search failed: ${error.message}`;
+        logToolUse('mac_web_search', input, msg);
         throw new Error(msg);
       }
     },

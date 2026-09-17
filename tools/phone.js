@@ -33,7 +33,7 @@ export function buildFaceTimeScript(scheme, dest) {
 
 export const phoneTools = tagDomain([
   createTool({
-    name: 'facetime_audio_call',
+    name: 'mac_facetime_audio_call',
     description: 'Make a FaceTime Audio call to a contact. Looks up the contact by name and initiates a call. Use this when the user says "call [name]", "phone [name]", "FaceTime [name]", or "call mom/dad/etc".',
     parameters: {
       type: 'object',
@@ -90,7 +90,7 @@ export const phoneTools = tagDomain([
     },
   }),
   createTool({
-    name: 'facetime_video_call',
+    name: 'mac_facetime_video_call',
     description: 'Make a FaceTime Video call to a contact. Use this when the user says "video call [name]", "FaceTime video [name]".',
     parameters: {
       type: 'object',

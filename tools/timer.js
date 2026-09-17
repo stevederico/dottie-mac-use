@@ -23,7 +23,7 @@ const activeTimers = new Map();
 /**
  * Serialize all timers.json read-modify-write cycles.
  * A firing timer's callback awaits a ~1s alarm sound before reloading and
- * rewriting the file; without this lock a concurrent timer_set/alarm_set can
+ * rewriting the file; without this lock a concurrent mac_timer_set/mac_alarm_set can
  * land between that callback's load and save and get clobbered. Mutations are
  * chained on a single module-level promise so they never interleave.
  */
@@ -177,7 +177,7 @@ export const timerTools = tagDomain([
   // ── Timers & Alarms ────────────────────────────────────────────────────────
 
   createTool({
-    name: 'timer_set',
+    name: 'mac_timer_set',
     description: 'Set a countdown timer.',
     directReturn: true,
     parameters: {
@@ -253,7 +253,7 @@ export const timerTools = tagDomain([
   }),
 
   createTool({
-    name: 'timer_list',
+    name: 'mac_timer_list',
     description: 'List active timers.',
     directReturn: true,
     parameters: {
@@ -287,7 +287,7 @@ export const timerTools = tagDomain([
   }),
 
   createTool({
-    name: 'timer_cancel',
+    name: 'mac_timer_cancel',
     description: 'Cancel a timer.',
     _internalParams: ['confirmed'],
     parameters: {
@@ -330,7 +330,7 @@ export const timerTools = tagDomain([
           return result;
         }
         const result = confirmTool({
-          toolName: 'timer_cancel',
+          toolName: 'mac_timer_cancel',
           input,
           title: 'Cancel all timers?',
           message: `This will cancel all ${timers.length} active timer${timers.length === 1 ? '' : 's'}.`,
@@ -353,7 +353,7 @@ export const timerTools = tagDomain([
   }),
 
   createTool({
-    name: 'alarm_set',
+    name: 'mac_alarm_set',
     description: 'Set an alarm.',
     directReturn: true,
     parameters: {
@@ -429,7 +429,7 @@ export const timerTools = tagDomain([
   }),
 
   createTool({
-    name: 'alarm_cancel',
+    name: 'mac_alarm_cancel',
     description: 'Cancel an alarm.',
     _internalParams: ['confirmed'],
     parameters: {
@@ -471,7 +471,7 @@ export const timerTools = tagDomain([
           return result;
         }
         const result = confirmTool({
-          toolName: 'alarm_cancel',
+          toolName: 'mac_alarm_cancel',
           input,
           title: 'Cancel all alarms?',
           message: `This will cancel all ${alarms.length} active alarm${alarms.length === 1 ? '' : 's'}.`,

@@ -1,12 +1,12 @@
 /**
  * Grok Hub tools — open hub.grok.me / *.grok.me apps in Dottie's borderless WKWebView.
- * Voice path: "open Grok Hub" / "open Grok Theft Auto from the hub" → hub_open → POST :1319/web/open.
+ * Voice path: "open Grok Hub" / "open Grok Theft Auto from the hub" → mac_hub_open → POST :1319/web/open.
  */
 
 import { createTool, axFetch, tagDomain, toolError } from './shared.js';
 
 const HUB_HOME = 'https://hub.grok.me/';
-const HUB_UA = 'Mozilla/5.0 Dottie/hub_open';
+const HUB_UA = 'Mozilla/5.0 Dottie/mac_hub_open';
 
 /** @type {{ at: number, apps: Array<{ id: string, name: string, url: string, subdomain: string }> }} */
 let catalogCache = { at: 0, apps: [] };
@@ -272,7 +272,7 @@ export async function resolveHubTarget(query, url) {
 
 /**
  * Ask Swift to open a borderless WKWebView for the given URL.
- * Shared by hub_open and open_url/safari_open_url (hub URLs must never hit the browser).
+ * Shared by mac_hub_open and mac_open_url/mac_safari_open_url (hub URLs must never hit the browser).
  * @param {string} url
  * @param {string} [title]
  */
@@ -293,13 +293,13 @@ export async function openHubWebView(url, title) {
 
 export const hubTools = tagDomain([
   createTool({
-    name: 'hub_open',
+    name: 'mac_hub_open',
     domain: 'info',
     requiresPermission: 'safari.control',
     description:
       'REQUIRED for Grok Hub: open hub.grok.me or a hub app/game in a borderless Dottie WebView (never the system browser). ' +
       'Use for: open Grok Hub, open the Grok Build Hub, open Grok Theft Auto / chess / any hub game. ' +
-      'Prefer over open_url and safari_open_url for anything on hub.grok.me or *.grok.me. ' +
+      'Prefer over mac_open_url and mac_safari_open_url for anything on hub.grok.me or *.grok.me. ' +
       'Pass query: "hub" for the store, or the app name. Requires Open URLs (safari.control) permission.',
     parameters: {
       type: 'object',
@@ -320,7 +320,7 @@ export const hubTools = tagDomain([
       try {
         const target = await resolveHubTarget(input.query, input.url);
         if (!isAllowedHubURL(target.url)) {
-          return toolError('hub_open', 'VALIDATION', 'Resolved URL is not allowed in the Hub WebView');
+          return toolError('mac_hub_open', 'VALIDATION', 'Resolved URL is not allowed in the Hub WebView');
         }
         await openHubWebView(target.url, target.title);
         return `Opened ${target.title} in Dottie WebView (${target.url})`;
@@ -328,12 +328,12 @@ export const hubTools = tagDomain([
         const msg = err instanceof Error ? err.message : String(err);
         if (msg.includes('AX service') || msg.includes('ECONNREFUSED') || msg.includes('fetch failed')) {
           return toolError(
-            'hub_open',
+            'mac_hub_open',
             'EXECUTION',
             'Could not reach the Dottie app WebView host (is Dottie running?). ' + msg,
           );
         }
-        return toolError('hub_open', 'VALIDATION', msg);
+        return toolError('mac_hub_open', 'VALIDATION', msg);
       }
     },
   }),

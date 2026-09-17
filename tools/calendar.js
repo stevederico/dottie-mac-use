@@ -14,7 +14,7 @@ const escapeAS = escapeAppleScript;
 export const calendarTools = tagDomain([
 
   createTool({
-    name: 'calendar_list',
+    name: 'mac_calendar_list',
     // No directReturn: conversational Q&A ("who's speaking?") needs a second
     // LLM turn over the event list. Fallback text includes titles for that turn
     // (agent_bridge strips `_ui` to fallback for the model).
@@ -87,7 +87,7 @@ export const calendarTools = tagDomain([
   }),
 
   createTool({
-    name: 'calendar_create',
+    name: 'mac_calendar_create',
     description: 'Create a calendar event.',
     directReturn: true,
     parameters: {
@@ -158,7 +158,7 @@ export const calendarTools = tagDomain([
   }),
 
   createTool({
-    name: 'calendar_update',
+    name: 'mac_calendar_update',
     description: 'Update a calendar event.',
     requiresPermission: 'calendar.destructive',
     requiresConfirmation: true,
@@ -204,7 +204,7 @@ export const calendarTools = tagDomain([
         if (input.newDate) changes.push(`move to ${input.newDate}`);
         if (input.newTime) changes.push(`reschedule to ${input.newTime}`);
         return confirmTool({
-          toolName: 'calendar_update',
+          toolName: 'mac_calendar_update',
           input,
           title: `Update event "${input.title}" on ${input.date}?`,
           message: `Changes: ${changes.join(', ') || 'none specified'}`,
@@ -271,7 +271,7 @@ export const calendarTools = tagDomain([
   }),
 
   createTool({
-    name: 'calendar_delete',
+    name: 'mac_calendar_delete',
     description: 'Delete a calendar event.',
     requiresPermission: 'calendar.destructive',
     requiresConfirmation: true,
@@ -301,7 +301,7 @@ export const calendarTools = tagDomain([
     execute: async (input, signal, context) => {
       if (!input.confirmed) {
         return confirmTool({
-          toolName: 'calendar_delete',
+          toolName: 'mac_calendar_delete',
           input,
           title: `Delete event "${input.title}" on ${input.date}?`,
           message: 'This cannot be undone.',

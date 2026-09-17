@@ -34,11 +34,11 @@ function resolvePath(relativePath) {
 
 export const workspaceTools = tagDomain([
   {
-    name: 'workspace_write',
+    name: 'mac_workspace_write',
     description: 'Write a raw text file to the agent workspace (~/.dottie/workspace/). ' +
       'Use ONLY for generated code, scripts, drafts, or files the user explicitly asked to be saved as a file. ' +
-      'DO NOT use for tasks/todos (use task_create), notes (use notes_create), reminders (use reminder_create), ' +
-      'calendar events (use calendar_create), or memory (use user_memory_append). ' +
+      'DO NOT use for tasks/todos (use mac_task_create), notes (use mac_notes_create), reminders (use mac_reminder_create), ' +
+      'calendar events (use mac_calendar_create), or memory (use dottie_memory_save). ' +
       'If the user says "create a task / note / reminder / event", load the right domain via tool_search instead.',
     parameters: {
       type: 'object',
@@ -71,10 +71,10 @@ export const workspaceTools = tagDomain([
   },
 
   {
-    name: 'workspace_read',
+    name: 'mac_workspace_read',
     description: 'Read a raw text file from the agent workspace (~/.dottie/workspace/). ' +
-      'Use ONLY to review files previously saved with workspace_write. ' +
-      'DO NOT use to look up tasks (use task_list), notes (use notes_list), reminders (use reminder_list), or events (use calendar_list).',
+      'Use ONLY to review files previously saved with mac_workspace_write. ' +
+      'DO NOT use to look up tasks (use mac_task_list), notes (use mac_notes_list), reminders (use mac_reminder_list), or events (use mac_calendar_list).',
     parameters: {
       type: 'object',
       properties: {
@@ -94,7 +94,7 @@ export const workspaceTools = tagDomain([
         }
         const stat = statSync(filePath);
         if (stat.isDirectory()) {
-          return `${input.filename} is a directory, use workspace_list instead`;
+          return `${input.filename} is a directory, use mac_workspace_list instead`;
         }
         const content = readFileSync(filePath, 'utf-8');
         const maxChars = 50000;
@@ -109,7 +109,7 @@ export const workspaceTools = tagDomain([
   },
 
   {
-    name: 'workspace_list',
+    name: 'mac_workspace_list',
     description: 'List files and folders in the agent workspace (~/.dottie/workspace/). Use this to see what files are available.',
     parameters: {
       type: 'object',
@@ -147,7 +147,7 @@ export const workspaceTools = tagDomain([
   },
 
   {
-    name: 'workspace_delete',
+    name: 'mac_workspace_delete',
     description: 'Delete a file from the agent workspace (~/.dottie/workspace/). Shows a confirmation dialog before deleting. Do NOT pass confirmed parameter - the user must confirm via the dialog.',
     parameters: {
       type: 'object',
@@ -195,7 +195,7 @@ export const workspaceTools = tagDomain([
           destructive: true
         },
         actions: [
-          { id: 'confirm', label: 'Delete', style: 'destructive', tool: 'workspace_delete', input: { filename: input.filename, confirmed: true } },
+          { id: 'confirm', label: 'Delete', style: 'destructive', tool: 'mac_workspace_delete', input: { filename: input.filename, confirmed: true } },
           { id: 'cancel', label: 'Cancel' }
         ]
       });
@@ -203,7 +203,7 @@ export const workspaceTools = tagDomain([
   },
 
   {
-    name: 'workspace_path',
+    name: 'mac_workspace_path',
     description: 'Get the full path to the agent workspace folder. Use this when you need to tell the user where files are saved.',
     parameters: {
       type: 'object',

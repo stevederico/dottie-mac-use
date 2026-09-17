@@ -25,7 +25,7 @@ function writeClipboard(text) {
 
 export const clipboardTools = tagDomain([
   createTool({
-    name: 'get_clipboard',
+    name: 'mac_get_clipboard',
     description: 'Read the current clipboard contents (text only)',
     parameters: {
       type: 'object',
@@ -40,7 +40,7 @@ export const clipboardTools = tagDomain([
   }),
 
   createTool({
-    name: 'set_clipboard',
+    name: 'mac_set_clipboard',
     description: 'Set the clipboard to specified text',
     parameters: {
       type: 'object',

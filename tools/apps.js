@@ -9,15 +9,15 @@ import { isAllowedHubURL, openHubWebView } from './hub.js';
 
 export const appsTools = tagDomain([
   createTool({
-    name: 'open_url',
+    name: 'mac_open_url',
     // info domain: tool_search maps "url / browser / open website" → info.
-    // When open_url lived only under system, the model searched info, got zero
+    // When mac_open_url lived only under system, the model searched info, got zero
     // tools, saw safari.* in skipped_scopes, and told the user Open URLs was
     // disabled even with safari.control granted in Settings.
     domain: 'info',
     description:
       'Open a URL in a new browser window (default browser). Always a new window — not a new tab in an existing window. ' +
-      'Do NOT use for Grok Hub / hub.grok.me / *.grok.me apps — use hub_open (Dottie WebView) instead. ' +
+      'Do NOT use for Grok Hub / hub.grok.me / *.grok.me apps — use mac_hub_open (Dottie WebView) instead. ' +
       'Requires Open URLs (safari.control) permission.',
     parameters: {
       type: 'object',
@@ -121,7 +121,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'get_frontmost_app',
+    name: 'mac_get_frontmost_app',
     description: 'Get the name of the currently active (frontmost) macOS application. Use this when the user asks what app they are using, what window is active, what application has focus, or which app is in front.',
     parameters: {
       type: 'object',
@@ -160,7 +160,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'type_text_at_cursor',
+    name: 'mac_type_text_at_cursor',
     description: 'Type text at the current cursor position (requires accessibility permission). Text will be typed into the frontmost application.',
     parameters: {
       type: 'object',
@@ -186,7 +186,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'get_selected_text',
+    name: 'mac_get_selected_text',
     description: 'Get the currently selected text from the frontmost application (requires accessibility permission)',
     parameters: {
       type: 'object',
@@ -242,7 +242,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'open_app',
+    name: 'mac_open_app',
     description: 'Open an app.',
     parameters: {
       type: 'object',
@@ -265,7 +265,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'close_app',
+    name: 'mac_close_app',
     description: 'Quit/close a running macOS application',
     parameters: {
       type: 'object',
@@ -289,7 +289,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'app_list_open',
+    name: 'mac_app_list_open',
     description: 'List all currently running applications',
     parameters: {
       type: 'object',
@@ -314,7 +314,7 @@ export const appsTools = tagDomain([
   }),
 
   createTool({
-    name: 'app_search',
+    name: 'mac_app_search',
     description: 'Search for installed applications using Spotlight',
     parameters: {
       type: 'object',

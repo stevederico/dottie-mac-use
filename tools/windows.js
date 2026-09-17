@@ -7,7 +7,7 @@ import { createTool } from './shared.js';
 
 export const windowsTools = tagDomain([
   createTool({
-    name: 'window_list',
+    name: 'mac_window_list',
     description: 'List all visible windows on screen right now. Only use when the user asks to see or show their open windows, not for general questions about window management.',
     parameters: {
       type: 'object',
@@ -51,12 +51,12 @@ export const windowsTools = tagDomain([
           const result = input.app
             ? `No windows found for "${input.app}"`
             : 'No visible windows found';
-          logToolUse('window_list', input, result);
+          logToolUse('mac_window_list', input, result);
           return result;
         }
 
         const result = `Windows:\n${output}`;
-        logToolUse('window_list', input, result);
+        logToolUse('mac_window_list', input, result);
         return result;
       } catch (error) {
         let errorMsg;
@@ -65,14 +65,14 @@ export const windowsTools = tagDomain([
         } else {
           errorMsg = `Failed to list windows: ${error.message}`;
         }
-        logToolUse('window_list', input, errorMsg);
+        logToolUse('mac_window_list', input, errorMsg);
         throw new Error(errorMsg);
       }
     },
   }),
 
   createTool({
-    name: 'window_focus',
+    name: 'mac_window_focus',
     description: 'Bring a specific macOS window to the front by app name and optional window title. Use this when the user wants to switch to a particular window, focus an app, or bring a window forward.',
     parameters: {
       type: 'object',
@@ -123,14 +123,14 @@ export const windowsTools = tagDomain([
 
         if (output.includes('not_found')) {
           const result = `No window found matching "${input.title}" in ${input.app}`;
-          logToolUse('window_focus', input, result);
+          logToolUse('mac_window_focus', input, result);
           return result;
         }
 
         const result = input.title
           ? `Focused window "${input.title}" in ${input.app}`
           : `Focused ${input.app}`;
-        logToolUse('window_focus', input, result);
+        logToolUse('mac_window_focus', input, result);
         return result;
       } catch (error) {
         let errorMsg;
@@ -139,14 +139,14 @@ export const windowsTools = tagDomain([
         } else {
           errorMsg = `Failed to focus window: ${error.message}`;
         }
-        logToolUse('window_focus', input, errorMsg);
+        logToolUse('mac_window_focus', input, errorMsg);
         throw new Error(errorMsg);
       }
     },
   }),
 
   createTool({
-    name: 'window_close',
+    name: 'mac_window_close',
     description: 'Close a specific macOS window by app name and optional window title. Use this when the user wants to close a window, dismiss a dialog, or close the frontmost window of an app.',
     parameters: {
       type: 'object',
@@ -211,24 +211,24 @@ export const windowsTools = tagDomain([
 
         if (output.includes('not_found')) {
           const result = `No window found matching "${input.title}" in ${input.app}`;
-          logToolUse('window_close', input, result);
+          logToolUse('mac_window_close', input, result);
           return result;
         }
         if (output.includes('no_window')) {
           const result = `No windows open in ${input.app}`;
-          logToolUse('window_close', input, result);
+          logToolUse('mac_window_close', input, result);
           return result;
         }
         if (output.includes('no_button')) {
           const result = `Could not find close button for ${input.app} window`;
-          logToolUse('window_close', input, result);
+          logToolUse('mac_window_close', input, result);
           return result;
         }
 
         const result = input.title
           ? `Closed window "${input.title}" in ${input.app}`
           : `Closed frontmost ${input.app} window`;
-        logToolUse('window_close', input, result);
+        logToolUse('mac_window_close', input, result);
         return result;
       } catch (error) {
         let errorMsg;
@@ -237,7 +237,7 @@ export const windowsTools = tagDomain([
         } else {
           errorMsg = `Failed to close window: ${error.message}`;
         }
-        logToolUse('window_close', input, errorMsg);
+        logToolUse('mac_window_close', input, errorMsg);
         throw new Error(errorMsg);
       }
     },

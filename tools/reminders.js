@@ -62,7 +62,7 @@ export function parseDateTime(str) {
 export const reminderTools = tagDomain([
 
   createTool({
-    name: 'reminder_update',
+    name: 'mac_reminder_update',
     description: 'Update a reminder.',
     requiresPermission: 'reminders.destructive',
     requiresConfirmation: true,
@@ -99,7 +99,7 @@ export const reminderTools = tagDomain([
         if (input.newTitle) changes.push(`rename to "${input.newTitle}"`);
         if (input.completed !== undefined) changes.push(input.completed ? 'mark complete' : 'mark incomplete');
         return confirmTool({
-          toolName: 'reminder_update',
+          toolName: 'mac_reminder_update',
           input,
           title: `Update reminder "${input.title}"?`,
           message: `Changes: ${changes.join(', ') || 'none specified'}`,
@@ -113,7 +113,7 @@ export const reminderTools = tagDomain([
         if (input.newTitle) updates.push(`set name of targetReminder to "${escapeAS(input.newTitle)}"`);
         // Ternary, not raw interpolation: the schema says `boolean` but nothing
         // enforces it, and a string would land as AppleScript source (which can
-        // `do shell script`). Matches reminder_list's `whose completed is` site.
+        // `do shell script`). Matches mac_reminder_list's `whose completed is` site.
         if (input.completed !== undefined) updates.push(`set completed of targetReminder to ${input.completed ? 'true' : 'false'}`);
 
         const script = `
@@ -135,7 +135,7 @@ export const reminderTools = tagDomain([
   }),
 
   createTool({
-    name: 'reminder_delete',
+    name: 'mac_reminder_delete',
     description: 'Delete a reminder.',
     requiresPermission: 'reminders.destructive',
     requiresConfirmation: true,
@@ -161,7 +161,7 @@ export const reminderTools = tagDomain([
     execute: async (input, signal, context) => {
       if (!input.confirmed) {
         return confirmTool({
-          toolName: 'reminder_delete',
+          toolName: 'mac_reminder_delete',
           input,
           title: `Delete reminder "${input.title}"?`,
           message: 'This cannot be undone.',
@@ -191,7 +191,7 @@ export const reminderTools = tagDomain([
   }),
 
   createTool({
-    name: 'reminder_create',
+    name: 'mac_reminder_create',
     description: 'Create a reminder.',
     directReturn: true,
     parameters: {
@@ -231,7 +231,7 @@ export const reminderTools = tagDomain([
         let script;
         if (due) {
           // Set the due-date components explicitly (locale-safe; mirrors
-          // calendar_create) instead of relying on AppleScript to parse a
+          // mac_calendar_create) instead of relying on AppleScript to parse a
           // natural-language string.
           script = `
             tell application "Reminders"
@@ -271,7 +271,7 @@ export const reminderTools = tagDomain([
   }),
 
   createTool({
-    name: 'reminder_list',
+    name: 'mac_reminder_list',
     description: 'List reminders.',
     directReturn: true,
     parameters: {

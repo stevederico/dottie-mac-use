@@ -9,9 +9,9 @@ import { locateAndClick } from './computer_vision.js';
 
 export const axTools = tagDomain([
   createTool({
-    name: 'ax_apps',
+    name: 'mac_ax_apps',
     description:
-      'List all running macOS applications with their bundle IDs, process IDs, and window count. Use this to find the bundleId needed for ax_tree, ax_click, and other ax_ tools.',
+      'List all running macOS applications with their bundle IDs, process IDs, and window count. Use this to find the bundleId needed for mac_ax_tree, mac_ax_click, and other ax_ tools.',
     parameters: {
       type: 'object',
       properties: {},
@@ -24,21 +24,21 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to list apps: ${error.message}`;
-        logToolUse('ax_apps', input, msg);
+        logToolUse('mac_ax_apps', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_tree',
+    name: 'mac_ax_tree',
     description:
-      'Inspect the UI element tree of a Mac app. Returns an indented tree; each interactive element has a ref like "@e5". The FIRST line is "snapshot: snap-N" — pass that snapshotId to ax_click/ax_fill/etc. to bind an action to this exact tree read (refs are only valid within their snapshot). Prefer acting by element name with ax_click; use refs/snapshotId when names are ambiguous.',
+      'Inspect the UI element tree of a Mac app. Returns an indented tree; each interactive element has a ref like "@e5". The FIRST line is "snapshot: snap-N" — pass that snapshotId to mac_ax_click/mac_ax_fill/etc. to bind an action to this exact tree read (refs are only valid within their snapshot). Prefer acting by element name with mac_ax_click; use refs/snapshotId when names are ambiguous.',
     parameters: {
       type: 'object',
       properties: {
         bundleId: {
           type: 'string',
-          description: 'App bundle identifier from ax_apps',
+          description: 'App bundle identifier from mac_ax_apps',
         },
         depth: {
           type: 'integer',
@@ -72,13 +72,13 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to read UI tree: ${error.message}`;
-        logToolUse('ax_tree', input, msg);
+        logToolUse('mac_ax_tree', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_focused',
+    name: 'mac_ax_focused',
     description:
       'Get the currently focused application and UI element. Shows what the user is currently interacting with, including the element\'s role, name, value, and its path in the UI hierarchy.',
     parameters: {
@@ -93,24 +93,24 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to get focused element: ${error.message}`;
-        logToolUse('ax_focused', input, msg);
+        logToolUse('mac_ax_focused', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_click',
+    name: 'mac_ax_click',
     description:
-      'Click a UI element in a macOS app. Prefer this AX click over screen_click — it is faster, more reliable, and does not steal focus. Identify the element EITHER by `ref` (e.g. "@e5" from the most recent ax_tree) OR by `name` (the element\'s visible label, e.g. "Save", "Sign In") — provide exactly one. Optionally pass `role` (e.g. "button") to disambiguate a name, and `snapshotId` (from the "snapshot:" line of ax_tree) to bind the click to a specific tree read. Clicks run in the background by default (no focus steal); set mode:"foreground" to bring the app frontmost first. Falls back automatically to a coordinate click if the AX press fails. Destructive actions (Delete, Remove, Trash, etc.) ask for confirmation first. Use screen_click only for Chromium/Electron/CEF apps whose ax_tree is empty.',
+      'Click a UI element in a macOS app. Prefer this AX click over mac_screen_click — it is faster, more reliable, and does not steal focus. Identify the element EITHER by `ref` (e.g. "@e5" from the most recent mac_ax_tree) OR by `name` (the element\'s visible label, e.g. "Save", "Sign In") — provide exactly one. Optionally pass `role` (e.g. "button") to disambiguate a name, and `snapshotId` (from the "snapshot:" line of mac_ax_tree) to bind the click to a specific tree read. Clicks run in the background by default (no focus steal); set mode:"foreground" to bring the app frontmost first. Falls back automatically to a coordinate click if the AX press fails. Destructive actions (Delete, Remove, Trash, etc.) ask for confirmation first. Use mac_screen_click only for Chromium/Electron/CEF apps whose mac_ax_tree is empty.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
-        ref:      { type: 'string', description: 'Element ref like "@e5" from ax_tree. Provide ref OR name, not both.' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
+        ref:      { type: 'string', description: 'Element ref like "@e5" from mac_ax_tree. Provide ref OR name, not both.' },
         name:     { type: 'string', description: 'Visible label of the element to click, e.g. "Save". Provide ref OR name, not both.' },
         role:     { type: 'string', description: 'Optional role filter when using name, e.g. "button", "link".' },
         mode:     { type: 'string', enum: ['background', 'foreground'], description: 'background (default, no focus steal) or foreground (activate app first).' },
-        snapshotId: { type: 'string', description: 'Optional snapshot id from the "snapshot:" line of ax_tree. Omit to use the latest tree read.' },
+        snapshotId: { type: 'string', description: 'Optional snapshot id from the "snapshot:" line of mac_ax_tree. Omit to use the latest tree read.' },
       },
       required: ['bundleId'],
     },
@@ -131,15 +131,15 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to click element: ${error.message}`;
-        logToolUse('ax_click', input, msg);
+        logToolUse('mac_ax_click', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'screen_click',
+    name: 'mac_screen_click',
     description:
-      'LAST-RESORT visual click for Chromium/Electron/CEF apps (Spotify, Discord) whose ax_tree is empty or unusable. Prefer ax_click (by name or ref) for every native app — it is faster, focus-preserving, and more reliable. Only use screen_click when ax_tree returns no usable elements. Describe WHAT to click in plain language (e.g. "the play button", "the first search result") and the model finds it on screen and clicks it. Ideal for Chromium/Electron/CEF apps (Spotify, Discord) whose ax_tree is empty/unusable. Set clickCount=2 to double-click (e.g. to play a Spotify track row).',
+      'LAST-RESORT visual click for Chromium/Electron/CEF apps (Spotify, Discord) whose mac_ax_tree is empty or unusable. Prefer mac_ax_click (by name or ref) for every native app — it is faster, focus-preserving, and more reliable. Only use mac_screen_click when mac_ax_tree returns no usable elements. Describe WHAT to click in plain language (e.g. "the play button", "the first search result") and the model finds it on screen and clicks it. Ideal for Chromium/Electron/CEF apps (Spotify, Discord) whose mac_ax_tree is empty/unusable. Set clickCount=2 to double-click (e.g. to play a Spotify track row).',
     parameters: {
       type: 'object',
       properties: {
@@ -170,25 +170,25 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to click "${input.target}": ${error.message}`;
-        logToolUse('screen_click', input, msg);
+        logToolUse('mac_screen_click', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_fill',
+    name: 'mac_ax_fill',
     description:
-      'Set the text value of a text field or text area in a macOS app. Identify the element EITHER by `ref` (e.g. "@e5" from the most recent ax_tree) OR by `name` (the field\'s visible label or placeholder, e.g. "Confirmation number") — provide exactly one. Optionally pass `role` to disambiguate a name, and `snapshotId` to bind to a specific tree read. For web pages in Safari, use bundleId com.apple.Safari (WebKit exposes the page into the accessibility tree) — or the safari_fill shortcut.',
+      'Set the text value of a text field or text area in a macOS app. Identify the element EITHER by `ref` (e.g. "@e5" from the most recent mac_ax_tree) OR by `name` (the field\'s visible label or placeholder, e.g. "Confirmation number") — provide exactly one. Optionally pass `role` to disambiguate a name, and `snapshotId` to bind to a specific tree read. For web pages in Safari, use bundleId com.apple.Safari (WebKit exposes the page into the accessibility tree) — or the mac_safari_fill shortcut.',
     parameters: {
       type: 'object',
       properties: {
         bundleId: {
           type: 'string',
-          description: 'App bundle identifier from ax_apps',
+          description: 'App bundle identifier from mac_ax_apps',
         },
         ref: {
           type: 'string',
-          description: 'Element ref like "@e5" from ax_tree output. Provide ref OR name, not both.',
+          description: 'Element ref like "@e5" from mac_ax_tree output. Provide ref OR name, not both.',
         },
         name: {
           type: 'string',
@@ -204,7 +204,7 @@ export const axTools = tagDomain([
         },
         snapshotId: {
           type: 'string',
-          description: 'Optional snapshot id from the "snapshot:" line of ax_tree. Omit to use the latest tree read.',
+          description: 'Optional snapshot id from the "snapshot:" line of mac_ax_tree. Omit to use the latest tree read.',
         },
       },
       required: ['bundleId', 'value'],
@@ -227,13 +227,13 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to fill element: ${error.message}`;
-        logToolUse('ax_fill', input, msg);
+        logToolUse('mac_ax_fill', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_press',
+    name: 'mac_ax_press',
     description:
       'Send a keyboard shortcut to a macOS app. Activates the app first, then presses the key combination. Format: "cmd+shift+t", "cmd+c", "return", "tab". Destructive shortcuts (cmd+delete, cmd+q) will ask for confirmation first.',
     parameters: {
@@ -241,7 +241,7 @@ export const axTools = tagDomain([
       properties: {
         bundleId: {
           type: 'string',
-          description: 'App bundle identifier from ax_apps',
+          description: 'App bundle identifier from mac_ax_apps',
         },
         shortcut: {
           type: 'string',
@@ -265,13 +265,13 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to press shortcut: ${error.message}`;
-        logToolUse('ax_press', input, msg);
+        logToolUse('mac_ax_press', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_menu',
+    name: 'mac_ax_menu',
     description:
       'Select a menu bar item in a macOS app. Use > to separate menu levels (e.g., "File>New Window", "Edit>Find>Find..."). Destructive menu items (Delete, Empty Trash) will ask for confirmation first.',
     parameters: {
@@ -279,7 +279,7 @@ export const axTools = tagDomain([
       properties: {
         bundleId: {
           type: 'string',
-          description: 'App bundle identifier from ax_apps',
+          description: 'App bundle identifier from mac_ax_apps',
         },
         menuPath: {
           type: 'string',
@@ -303,20 +303,20 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to select menu item: ${error.message}`;
-        logToolUse('ax_menu', input, msg);
+        logToolUse('mac_ax_menu', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_scroll',
+    name: 'mac_ax_scroll',
     description:
-      'Scroll a scrollable UI element in a macOS app. Use this to scroll through lists, web pages, or any ScrollArea. Identify the scrollable element by its ref from ax_tree.',
+      'Scroll a scrollable UI element in a macOS app. Use this to scroll through lists, web pages, or any ScrollArea. Identify the scrollable element by its ref from mac_ax_tree.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
-        ref: { type: 'string', description: 'Element ref like "@e5" from ax_tree output' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
+        ref: { type: 'string', description: 'Element ref like "@e5" from mac_ax_tree output' },
         direction: { type: 'string', enum: ['up', 'down', 'left', 'right'], description: 'Scroll direction' },
         amount: { type: 'integer', description: 'Number of lines to scroll (default 3)' },
       },
@@ -337,20 +337,20 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to scroll: ${error.message}`;
-        logToolUse('ax_scroll', input, msg);
+        logToolUse('mac_ax_scroll', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_read',
+    name: 'mac_ax_read',
     description:
       'Read the current attributes of a single UI element (role, name, value, enabled, focused, selected). Use this to verify an action worked without re-reading the full tree.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
-        ref: { type: 'string', description: 'Element ref like "@e5" from ax_tree output' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
+        ref: { type: 'string', description: 'Element ref like "@e5" from mac_ax_tree output' },
       },
       required: ['bundleId', 'ref'],
     },
@@ -364,20 +364,20 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to read element: ${error.message}`;
-        logToolUse('ax_read', input, msg);
+        logToolUse('mac_ax_read', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_set_value',
+    name: 'mac_ax_set_value',
     description:
-      'Set the value of a non-text UI element — sliders (number), checkboxes/switches (true/false), segmented controls. For text fields, use ax_fill instead.',
+      'Set the value of a non-text UI element — sliders (number), checkboxes/switches (true/false), segmented controls. For text fields, use mac_ax_fill instead.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
-        ref: { type: 'string', description: 'Element ref like "@e5" from ax_tree output' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
+        ref: { type: 'string', description: 'Element ref like "@e5" from mac_ax_tree output' },
         value: { description: 'New value — number for sliders, boolean for checkboxes, string for others' },
       },
       required: ['bundleId', 'ref', 'value'],
@@ -392,20 +392,20 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to set value: ${error.message}`;
-        logToolUse('ax_set_value', input, msg);
+        logToolUse('mac_ax_set_value', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_select',
+    name: 'mac_ax_select',
     description:
-      'Mark a UI element as selected — for tabs, list rows, and popup items where clicking does not trigger the right action. Use ax_click first; fall back to this when click is a no-op.',
+      'Mark a UI element as selected — for tabs, list rows, and popup items where clicking does not trigger the right action. Use mac_ax_click first; fall back to this when click is a no-op.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
-        ref: { type: 'string', description: 'Element ref like "@e5" from ax_tree output' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
+        ref: { type: 'string', description: 'Element ref like "@e5" from mac_ax_tree output' },
       },
       required: ['bundleId', 'ref'],
     },
@@ -419,20 +419,20 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to select: ${error.message}`;
-        logToolUse('ax_select', input, msg);
+        logToolUse('mac_ax_select', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_show_menu',
+    name: 'mac_ax_show_menu',
     description:
-      'Show the context menu (right-click menu) for a UI element. Use ax_tree after to see the menu items, then ax_click on the item you want.',
+      'Show the context menu (right-click menu) for a UI element. Use mac_ax_tree after to see the menu items, then mac_ax_click on the item you want.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
-        ref: { type: 'string', description: 'Element ref like "@e5" from ax_tree output' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
+        ref: { type: 'string', description: 'Element ref like "@e5" from mac_ax_tree output' },
       },
       required: ['bundleId', 'ref'],
     },
@@ -446,19 +446,19 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to show context menu: ${error.message}`;
-        logToolUse('ax_show_menu', input, msg);
+        logToolUse('mac_ax_show_menu', input, msg);
         throw new Error(msg);
       }
     },
   }),
   createTool({
-    name: 'ax_wait_for',
+    name: 'mac_ax_wait_for',
     description:
-      'Wait until a UI element matching the query appears in the app, then return its ref. Use this instead of repeatedly calling ax_tree when waiting for a dialog, menu, or loaded content. Returns error on timeout.',
+      'Wait until a UI element matching the query appears in the app, then return its ref. Use this instead of repeatedly calling mac_ax_tree when waiting for a dialog, menu, or loaded content. Returns error on timeout.',
     parameters: {
       type: 'object',
       properties: {
-        bundleId: { type: 'string', description: 'App bundle identifier from ax_apps' },
+        bundleId: { type: 'string', description: 'App bundle identifier from mac_ax_apps' },
         query: {
           type: 'object',
           description: 'Match criteria — at least one of role or name must be set',
@@ -486,7 +486,7 @@ export const axTools = tagDomain([
         return result;
       } catch (error) {
         const msg = `Failed to wait for element: ${error.message}`;
-        logToolUse('ax_wait_for', input, msg);
+        logToolUse('mac_ax_wait_for', input, msg);
         throw new Error(msg);
       }
     },

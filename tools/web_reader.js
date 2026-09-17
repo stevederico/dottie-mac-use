@@ -1,5 +1,5 @@
 /**
- * web_reader — fetch a URL and return readable text.
+ * mac_web_reader — fetch a URL and return readable text.
  * Built for the stream-studio co-host so it can "pull up a site and read it"
  * during a livestream. Keeps it dependency-free: native fetch + a small
  * HTML-to-text stripper.
@@ -23,7 +23,7 @@ const MAX_REDIRECTS = 5;
 
 export const webReaderTools = tagDomain([
   createTool({
-    name: 'web_reader',
+    name: 'mac_web_reader',
     description: 'Fetch a web page and return its readable text content. Use when the user asks you to read, summarize, look at, or pull up a website. Returns the page title and main text body, stripped of HTML, scripts, and styles.',
     parameters: {
       type: 'object',
@@ -68,7 +68,7 @@ export const webReaderTools = tagDomain([
           '',
           body,
         ].filter(Boolean).join('\n');
-        logToolUse('web_reader', input, `${title || '(no title)'} — ${body.length} chars`);
+        logToolUse('mac_web_reader', input, `${title || '(no title)'} — ${body.length} chars`);
         return result;
       } catch (err) {
         const msg = err?.name === 'AbortError' ? 'Fetch aborted' : (err?.message || String(err));

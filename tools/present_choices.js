@@ -1,5 +1,5 @@
 /**
- * present_choices — render a row of tappable action buttons (DUIActionButtonsCard).
+ * mac_present_choices — render a row of tappable action buttons (DUIActionButtonsCard).
  *
  * This is the ONLY producer of the `action_buttons` _ui component. Use it when
  * the natural next step is for the USER to pick between a few concrete options
@@ -16,7 +16,7 @@ import { toolOk, toolError, tagDomain } from './shared.js';
 
 export const presentChoicesTools = tagDomain([
   {
-    name: 'present_choices',
+    name: 'mac_present_choices',
     description:
       'Show the user a row of tappable buttons to pick between 2–5 concrete options. ' +
       'Use when you would otherwise ask "do you want A or B?" and each option maps to an action. ' +
@@ -52,7 +52,7 @@ export const presentChoicesTools = tagDomain([
     execute: async (input) => {
       const choices = Array.isArray(input?.choices) ? input.choices : [];
       if (choices.length < 2) {
-        return toolError('present_choices', 'VALIDATION', 'Provide at least 2 choices.');
+        return toolError('mac_present_choices', 'VALIDATION', 'Provide at least 2 choices.');
       }
 
       const actions = choices.map((c, i) => ({

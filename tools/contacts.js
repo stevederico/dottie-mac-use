@@ -7,7 +7,7 @@ import { createTool } from './shared.js';
 
 export const contactsTools = tagDomain([
   createTool({
-    name: 'contacts_list',
+    name: 'mac_contacts_list',
     description: 'Search contacts.',
     directReturn: true,
     parameters: {
@@ -68,7 +68,7 @@ export const contactsTools = tagDomain([
   }),
 
   createTool({
-    name: 'contacts_get',
+    name: 'mac_contacts_get',
     description: 'Get contact details.',
     directReturn: true,
     parameters: {

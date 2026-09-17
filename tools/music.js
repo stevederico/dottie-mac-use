@@ -18,7 +18,7 @@ function parseSpotifyTrackUri(input) {
 
 export const musicTools = tagDomain([
   createTool({
-    name: 'music_play',
+    name: 'mac_music_play',
     description:
       'Play a track in Spotify from the start. Prefer `uri` (spotify:track:… or open.spotify.com/track/…). ' +
       'With free-text `query` only (no URI), opens Spotify search — for reliable auto-play pass a track URI. ' +
@@ -90,8 +90,8 @@ export const musicTools = tagDomain([
 
   // System-wide media controls (work with ANY app - browsers, Spotify, Music, etc.)
   createTool({
-    name: 'media_play_pause',
-    description: 'Pause or resume whatever is ALREADY playing (toggles the system play/pause key). Use ONLY when the user asks to pause/resume. Never use this to find out what is playing — that is music_now_playing.',
+    name: 'mac_media_play_pause',
+    description: 'Pause or resume whatever is ALREADY playing (toggles the system play/pause key). Use ONLY when the user asks to pause/resume. Never use this to find out what is playing — that is mac_music_now_playing.',
     directReturn: true,
     parameters: {
       type: 'object',
@@ -111,7 +111,7 @@ export const musicTools = tagDomain([
   }),
 
   createTool({
-    name: 'media_next',
+    name: 'mac_media_next',
     description: 'Skip to next track.',
     directReturn: true,
     parameters: {
@@ -132,7 +132,7 @@ export const musicTools = tagDomain([
   }),
 
   createTool({
-    name: 'media_previous',
+    name: 'mac_media_previous',
     description: 'Previous track.',
     directReturn: true,
     parameters: {
@@ -153,7 +153,7 @@ export const musicTools = tagDomain([
   }),
 
   createTool({
-    name: 'music_now_playing',
+    name: 'mac_music_now_playing',
     description: 'Get the currently playing track (name, artist, album) from Spotify or Apple Music. Use for any "what\'s playing / what song is this" question. Read-only — never changes playback.',
     directReturn: true,
     parameters: {
