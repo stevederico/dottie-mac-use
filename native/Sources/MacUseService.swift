@@ -680,6 +680,17 @@ class MacUseService {
             let result = AXActionExecutor.keyEvent(key: key, modifiers: modifiers, direction: direction, confirmed: confirmed)
             sendResponse(connection, status: 200, body: result, contentType: "application/json")
 
+        case ("POST", "/ax/brightness"):
+            let params = parseJSONBody(request.body)
+            let direction = params["direction"] as? String ?? ""
+            let steps = (params["steps"] as? NSNumber)?.intValue ?? 1
+            guard !direction.isEmpty else {
+                sendResponse(connection, status: 400, body: "{\"error\":\"direction required\"}", contentType: "application/json")
+                return
+            }
+            let result = AXActionExecutor.brightnessAdjust(direction: direction, steps: steps)
+            sendResponse(connection, status: 200, body: result, contentType: "application/json")
+
         default:
             sendResponse(connection, status: 404, body: "{\"error\":\"Not found\"}", contentType: "application/json")
         }

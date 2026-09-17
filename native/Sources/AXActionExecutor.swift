@@ -574,6 +574,31 @@ struct AXActionExecutor {
         return jsonResult(["result": "Typed \(text.count) character\(text.count == 1 ? "" : "s") into the focused app", "method": "keystroke"])
     }
 
+    /// Adjusts display brightness via HID media keys (144 up / 145 down).
+    static func brightnessAdjust(direction: String, steps: Int) -> String {
+        let dir = direction.lowercased()
+        guard dir == "up" || dir == "down" else {
+            return "{\"error\":\"direction must be up or down\"}"
+        }
+        let keyCode: CGKeyCode = dir == "up" ? 144 : 145
+        let clamped = max(1, min(16, steps))
+        guard let source = CGEventSource(stateID: .combinedSessionState) else {
+            return "{\"error\":\"Failed to create CGEventSource\"}"
+        }
+        for _ in 0..<clamped {
+            guard let keyDown = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: true),
+                  let keyUp = CGEvent(keyboardEventSource: source, virtualKey: keyCode, keyDown: false) else {
+                return "{\"error\":\"Failed to create brightness key event\"}"
+            }
+            keyDown.post(tap: .cghidEventTap)
+            usleep(30000)
+            keyUp.post(tap: .cghidEventTap)
+            usleep(50000)
+        }
+        AppLogger.info("AX brightnessAdjust: \(dir) × \(clamped)")
+        return jsonResult(["result": "Brightness \(dir) by \(clamped) step\(clamped == 1 ? "" : "s")", "method": "keystroke"])
+    }
+
     /// Sends a raw key event to the focused app: direction "press" (down+up, default),
     /// or "down"/"up" for held keys. Destructive chords (cmd+q etc.) gate on `down`
     /// and `press` — gating only `press` would let a held-cmd + tapped-q slip through.

@@ -1,24 +1,26 @@
 /**
  * System controls: brightness and volume tools.
  *
- * Brightness routes through the Swift app via deep links (Accessibility permissions).
+ * Brightness posts HID media keys via dottie-mac-use-ax (`POST /ax/brightness`).
  * Volume uses AppleScript with Alexa-style 0-10 scale mapping to 0-100%.
  */
 
-import { runCommand, runCommandSafe, tagDomain } from './shared.js';
-import { createTool } from './shared.js';
+import { runCommandSafe, tagDomain, axFetch, createTool } from './shared.js';
 
 // --- Brightness helpers ---
 
 /**
- * Adjust brightness via deep link to Swift app.
+ * Adjust brightness via AX HID media keys.
  *
  * @param {string} direction - "up" or "down"
  * @param {number} steps - Number of steps (1-16)
  */
 async function adjustBrightness(direction, steps = 1) {
   const clampedSteps = Math.min(16, Math.max(1, steps));
-  await runCommand(`open "dottie://brightness?direction=${direction}&steps=${clampedSteps}"`);
+  return axFetch('/ax/brightness', {
+    method: 'POST',
+    body: JSON.stringify({ direction, steps: clampedSteps }),
+  });
 }
 
 // --- Volume helpers ---

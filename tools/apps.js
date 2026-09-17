@@ -3,8 +3,7 @@
  */
 
 import { spawn } from 'node:child_process';
-import { runCommand, runCommandSafe, sanitizeShellArg, escapeAppleScript, tagDomain } from './shared.js';
-import { createTool } from './shared.js';
+import { runCommand, runCommandSafe, sanitizeShellArg, escapeAppleScript, tagDomain, axFetch, createTool } from './shared.js';
 import { isAllowedHubURL, openHubWebView } from './hub.js';
 
 export const appsTools = tagDomain([
@@ -172,15 +171,13 @@ export const appsTools = tagDomain([
       },
       required: ['text'],
     },
+    requiresPermission: 'accessibility.execute',
     execute: async (input, signal, context) => {
-      // Use deep link to trigger Swift GlobalRecorder paste functionality
-      const encodedText = encodeURIComponent(input.text);
-      await runCommandSafe('open', [`dottie://type?text=${encodedText}`]);
-
-      // Brief settle for Swift to pick up the deep link before we return the
-      // (cosmetic) confirmation — the actual typing happens async Swift-side.
-      await new Promise(resolve => setTimeout(resolve, 50));
-
+      // Same HID path as mac_keyboard_type (no Dottie.app deep link).
+      await axFetch('/ax/keyboard_type', {
+        method: 'POST',
+        body: JSON.stringify({ text: input.text }),
+      });
       return `Typed text at cursor: "${input.text.substring(0, 50)}${input.text.length > 50 ? '...' : ''}"`;
     },
   }),
