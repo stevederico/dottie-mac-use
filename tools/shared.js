@@ -72,10 +72,11 @@ Add any other context here...
  */
 export function logToolUse(toolName, input, result) {
   const timestamp = new Date().toISOString();
-  const resultSnippet = typeof result === 'string'
-    ? result.substring(0, 100) + (result.length > 100 ? '...' : '')
-    : JSON.stringify(result).substring(0, 100);
-  console.log(`[TOOL] ${timestamp} - ${toolName}`, { input, result: resultSnippet });
+  const inputKeys = input && typeof input === 'object' ? Object.keys(input) : [];
+  const resultChars = typeof result === 'string'
+    ? result.length
+    : (result == null ? 0 : JSON.stringify(result).length);
+  console.log(`[TOOL] ${timestamp} - ${toolName}`, { inputKeys, resultChars });
 }
 
 /**

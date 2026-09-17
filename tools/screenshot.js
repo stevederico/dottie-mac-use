@@ -95,7 +95,7 @@ export const screenshotTools = tagDomain([
         }
 
         const analysis = await analyzeWithAgentVision({ base64Image, question });
-        logToolUse('mac_screenshot_and_analyze', { question, type: captureType }, analysis.substring(0, 200) + '...');
+        logToolUse('mac_screenshot_and_analyze', { question, type: captureType }, analysis);
         return analysis;
       } catch (error) {
         const result = `Failed to analyze screen: ${error.message}`;
