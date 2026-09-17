@@ -83,7 +83,7 @@ export const toolSearchDefinition = {
  * @param {Object} deps.permissions - granted permission map { 'calendar.read': true, ... }
  * @param {Array} deps.liveTools - the array passed to dottie-memory.chatRaw, mutated in place
  * @param {Set<string>} deps.sessionLoadedSet - per-conversation cache of loaded tool names
- * @param {Function} [deps.onLoaded] - optional callback fired with ({domain, query, loadedNames, skippedScopes}) for telemetry/dev overlay
+ * @param {Function} [deps.onLoaded] - optional callback fired with ({domain, query, loadedNames, skippedScopes}) for dev overlay
  */
 export function buildToolSearch({
   getDomainTools,

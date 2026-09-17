@@ -37,7 +37,7 @@ class MacUseService {
             case .failed(let error):
                 // Almost always :1319 held by another Dottie process (second
                 // instance, or a stale one on relaunch). Nothing to fix in code;
-                // warn keeps it in the log without an error.thrown row.
+                // warn keeps it in the log.
                 AppLogger.warn("MacUseService listener failed (port \(AppPorts.axServer) busy?): \(error)")
                 self?.listener.cancel()
             case .cancelled:
@@ -208,7 +208,6 @@ class MacUseService {
 
             if let error = error {
                 // Peer reset / incomplete read is normal TCP, not a fault.
-                // error.thrown here was a field row on 2026.8.28.
                 AppLogger.warn("MacUseService connection read error: \(error)")
                 connection.cancel()
                 return

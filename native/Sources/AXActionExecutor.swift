@@ -286,7 +286,6 @@ struct AXActionExecutor {
             return jsonResult(["result": "Clicked \(record.role) \"\(record.name)\"", "method": "ax"])
         }
         // Expected rung-1 miss → rung-2 coordinate path (not a hard fail).
-        // error level auto-fires error.thrown; field 2026.8.6 counted this as a prod error.
         AppLogger.warn("AX click failed on \(ident): AXError \(r.rawValue), escalating to coordinate click")
 
         // Rung 2 — coordinate click at the stored frame center (never re-walk the tree).
