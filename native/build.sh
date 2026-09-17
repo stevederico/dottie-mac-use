@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-# Build standalone dottie-mac-use-ax → .build/dottie-mac-use-ax
+# Build standalone dottie-mac-use-ax → bin/ (and native/.build/ cache).
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")" && pwd)"
-OUT="$ROOT/.build/dottie-mac-use-ax"
-mkdir -p "$(dirname "$OUT")"
+PKG="$(cd "$ROOT/.." && pwd)"
+OUT_BUILD="$ROOT/.build/dottie-mac-use-ax"
+OUT_BIN="${1:-$PKG/bin/dottie-mac-use-ax}"
+mkdir -p "$(dirname "$OUT_BUILD")" "$(dirname "$OUT_BIN")"
 SOURCES=(
   "$ROOT/Sources/Stubs.swift"
   "$ROOT/Sources/AXTreeReader.swift"
@@ -18,7 +20,9 @@ swiftc -O -parse-as-library \
   -framework ApplicationServices -framework EventKit -framework CoreGraphics \
   -framework Security \
   "${SOURCES[@]}" \
-  -o "$OUT"
-chmod +x "$OUT"
-echo "OK: $OUT"
-file "$OUT"
+  -o "$OUT_BUILD"
+chmod +x "$OUT_BUILD"
+cp -a "$OUT_BUILD" "$OUT_BIN"
+chmod +x "$OUT_BIN"
+echo "OK: $OUT_BIN"
+file "$OUT_BIN"

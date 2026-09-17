@@ -1,7 +1,6 @@
 {
   "name": "dottie-mac-use",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.2.0",
   "license": "MIT",
   "type": "module",
   "description": "macOS agent tools + AX/EventKit CLI — standalone MCP/HTTP, no Dottie.app required",
@@ -30,11 +29,14 @@
     "./domains.js": "./domains.js"
   },
   "bin": {
-    "dottie-mac-use": "./mcp.js"
+    "dottie-mac-use": "./http.js"
   },
   "scripts": {
-    "build:ax": "bash native/build.sh",
-    "mcp": "node mcp.js"
+    "postinstall": "node -e \"import('node:fs').then(fs=>{try{fs.chmodSync('bin/dottie-mac-use-ax',0o755)}catch{}})\"",
+    "start": "node http.js",
+    "mcp": "node mcp.js",
+    "http": "node http.js",
+    "build:ax": "bash native/build.sh"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.29.0"

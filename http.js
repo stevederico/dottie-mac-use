@@ -1,6 +1,7 @@
+#!/usr/bin/env node
 /**
  * dottie-mac-use HTTP — owns AX (:1319); tools run in this process.
- * Listen: DOTTIE_MAC_USE_HTTP_PORT=1321 node http.js
+ * Default: node http.js  →  127.0.0.1:1321
  */
 
 import http from 'node:http';
@@ -29,7 +30,7 @@ export async function handleMacUseRequest(req, res) {
         service: 'dottie-mac-use',
         ax,
         axUrl: axBaseUrl(),
-        port: PORTS.MAC_USE_HTTP_PORT || 1321,
+        port: PORTS.MAC_USE_HTTP_PORT,
       }));
       return;
     }
@@ -77,8 +78,9 @@ export function createMacUseServer() {
   });
 }
 
-const port = Number(process.env.DOTTIE_MAC_USE_HTTP_PORT || 0);
-if (port > 0 && process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
+  const port = Number(process.env.DOTTIE_MAC_USE_HTTP_PORT || PORTS.MAC_USE_HTTP_PORT);
   ensureAxRunning()
     .then(() => {
       const server = createMacUseServer();
@@ -88,7 +90,6 @@ if (port > 0 && process.argv[1] && import.meta.url === pathToFileURL(process.arg
     })
     .catch((err) => {
       process.stderr.write(`[dottie-mac-use] AX start failed: ${err.message}\n`);
-      // Still listen — tools that don't need AX can work; /health will 503.
       createMacUseServer().listen(port, '127.0.0.1', () => {
         process.stderr.write(`[dottie-mac-use] HTTP listening (AX down) on 127.0.0.1:${port}\n`);
       });
