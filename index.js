@@ -33,7 +33,6 @@ import { inputTools } from './tools/input.js';
 import { webTools } from './tools/web.js';
 import { tasksTools } from './tools/tasks.js';
 import { webReaderTools } from './tools/web_reader.js';
-import { presentChoicesTools } from './tools/present_choices.js';
 
 export const customTools = [
   ...clipboardTools,
@@ -59,5 +58,4 @@ export const customTools = [
   ...webTools,
   ...tasksTools,
   ...webReaderTools,
-  ...presentChoicesTools,
 ];

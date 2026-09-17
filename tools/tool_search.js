@@ -43,9 +43,7 @@ export const toolSearchDefinition = {
     'info (open a website/URL/link, open stripe/github/docs in the browser, open Grok Hub / hub.grok.me / Grok Theft Auto / hub apps via mac_hub_open not the browser, note, file, folder, safari tabs, chrome, what url is open, current page, map, location, weather, web search, google), ' +
     'system (dark mode, light mode, toggle theme, volume, brightness, wifi, bluetooth, sleep, lock screen, hide windows, show desktop, open an app, frontmost app, what app, switch app), ' +
     'computer_use (click button, type into other app, keystroke, automate, move mouse, scroll, fill form), ' +
-    'dev (code, file edit, repo, git, terminal, shell command), ' +
-    'automation (scheduled job, cron, task, trigger, and anything recurring — "every day", "every morning", ' +
-    '"repeat weekly" — as opposed to a one-off calendar event or reminder, which is schedule). ' +
+    'dev (code, file edit, repo, git, terminal, shell command). ' +
     'After calling, the loaded tools are callable on your next turn — call the most relevant one immediately.',
   parameters: {
     type: 'object',

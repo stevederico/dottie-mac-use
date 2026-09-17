@@ -6,7 +6,7 @@
  * on-disk persistence + serialization lock, so they stay co-located here.
  */
 
-import { runCommand, toolOk, confirmTool, parseTime, tagDomain } from './shared.js';
+import { runCommand, confirmTool, parseTime, tagDomain } from './shared.js';
 import { createTool } from './shared.js';
 import { log } from '../logger.js';
 import { promises as fs } from 'fs';
@@ -234,19 +234,7 @@ export const timerTools = tagDomain([
 
       activeTimers.set(id, timeoutId);
 
-      const fallback = `Timer set for ${formatDuration(ms)}${input.label ? ` (${input.label})` : ''}. Ends at ${endsAt.toLocaleTimeString()}.`;
-      const result = toolOk(fallback, {
-        component: "timer",
-        version: 1,
-        data: {
-          id: id,
-          label: label,
-          duration: formatDuration(ms),
-          endsAt: endsAt.toISOString(),
-          isAlarm: false
-        },
-        fallback
-      });
+      const result = `Timer set for ${formatDuration(ms)}${input.label ? ` (${input.label})` : ''}. Ends at ${endsAt.toLocaleTimeString()}.`;
       return result;
       });
     },
@@ -410,19 +398,7 @@ export const timerTools = tagDomain([
       activeTimers.set(id, timeoutId);
 
       const dayStr = target.toDateString() === new Date().toDateString() ? 'today' : 'tomorrow';
-      const fallback = `Alarm set for ${target.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} ${dayStr}${input.label ? ` (${input.label})` : ''}.`;
-      const result = toolOk(fallback, {
-        component: "timer",
-        version: 1,
-        data: {
-          id: id,
-          label: label,
-          duration: formatDuration(ms),
-          endsAt: target.toISOString(),
-          isAlarm: true
-        },
-        fallback
-      });
+      const result = `Alarm set for ${target.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })} ${dayStr}${input.label ? ` (${input.label})` : ''}.`;
       return result;
       });
     },

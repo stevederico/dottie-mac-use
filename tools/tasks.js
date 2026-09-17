@@ -1,16 +1,9 @@
 /**
  * Task tool overrides (no dottie-memory import — uses context.taskStore only):
- * - `mac_task_list` wraps results in a `_ui: { component: "list" }` envelope.
  * - `mac_task_create` talks to taskStore directly with a sharper description.
  */
 
-import { toolOk, tagDomain } from './shared.js';
-
-const STATUS_ICON = {
-  pending: 'circle',
-  in_progress: 'play.circle.fill',
-  completed: 'checkmark.circle.fill',
-};
+import { tagDomain } from './shared.js';
 
 export const tasksTools = tagDomain([
   {
@@ -119,35 +112,7 @@ export const tasksTools = tagDomain([
         return `${status} [${taskId}] ${g.description} [${g.priority}] - ${progress} (${g.progress}%)`;
       }).join('\n');
 
-      const items = tasks.map((g) => {
-        const id = String(g.id || g._id || '');
-        const doneCount = g.steps?.filter((s) => s.done).length || 0;
-        const totalSteps = g.steps?.length || 0;
-        const progressLabel = totalSteps > 0 ? `${doneCount}/${totalSteps} steps` : 'No steps';
-        const subtitleParts = [progressLabel];
-        if (g.priority) subtitleParts.push(g.priority);
-        if (typeof g.progress === 'number') subtitleParts.push(`${g.progress}%`);
-        return {
-          id,
-          title: g.description || '(untitled)',
-          subtitle: subtitleParts.join(' • '),
-          icon: STATUS_ICON[g.status] || 'circle',
-        };
-      });
-
-      const titleParts = ['Tasks'];
-      if (input.status) titleParts.push(`(${input.status})`);
-      if (input.category) titleParts.push(`— ${input.category}`);
-
-      return toolOk(text, {
-        component: 'list',
-        version: 1,
-        data: {
-          title: titleParts.join(' '),
-          items,
-        },
-        fallback: text,
-      });
+      return text;
     },
   },
-], 'automation');
+], 'schedule');

@@ -5,7 +5,7 @@
  * clock.js, timers.js). Behavior identical.
  */
 
-import { toolOk, confirmTool, escapeAppleScript, runAppleScript, axFetch, tagDomain } from './shared.js';
+import { confirmTool, escapeAppleScript, runAppleScript, axFetch, tagDomain } from './shared.js';
 import { createTool } from './shared.js';
 
 /** @see escapeAppleScript — alias kept so the script interpolation sites read tersely. */
@@ -59,25 +59,13 @@ export const calendarTools = tagDomain([
           isAllDay: e.isAllDay,
         }));
 
-        // agent_bridge strips `_ui` → LLM sees only `_ui.fallback`. Put titles
-        // there so Q&A ("who's speaking?") works. Chat card reads `data.events`
-        // and caps visible rows (DUICalendarCard) — not this string.
-        const fallback = events.length > 0
+        const result = events.length > 0
           ? `${events.length} event(s) in the next ${days} days. Titles: ` + events
             .slice(0, 40)
             .map((e) => e.title)
             .filter(Boolean)
             .join(' · ')
           : `No events in the next ${days} days`;
-        const result = toolOk(fallback, {
-          component: 'calendar',
-          version: 1,
-          data: {
-            events,
-            dateRange: `Next ${days} days`,
-          },
-          fallback,
-        });
         return result;
       } catch (error) {
         const result = `Failed to list calendar: ${error.message}`;
