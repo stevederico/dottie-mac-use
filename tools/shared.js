@@ -42,10 +42,10 @@ export async function axFetch(path, options = {}) {
   return res.text();
 }
 
-/** Path to user-memory.md file */
-export const USER_MEMORY_PATH = path.join(DOTTIE_DIR, 'user-memory.md');
+/** Path to dottie-memory.md file */
+export const USER_MEMORY_PATH = path.join(DOTTIE_DIR, 'dottie-memory.md');
 
-/** Default content for new user-memory.md file */
+/** Default content for new dottie-memory.md file */
 export const DEFAULT_USER_MEMORY = `# User Memory
 
 This is your personal context file. Add information about yourself that you want Dottie to remember across all conversations.
