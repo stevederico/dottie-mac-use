@@ -1,6 +1,6 @@
 {
   "name": "dottie-mac-use",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "license": "MIT",
   "type": "module",
   "description": "macOS agent tools + AX/EventKit CLI — standalone MCP/HTTP, no Dottie.app required",

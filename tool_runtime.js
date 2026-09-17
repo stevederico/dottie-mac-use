@@ -15,7 +15,7 @@ import { AGENT_DB_PATH } from './paths.js';
 
 let permissionsWired = false;
 
-/** Wire Settings permissions from ~/.dottie/agent.db (same table as gateway). */
+/** Wire Settings permissions from package agent.db (defaults if missing). */
 export function ensurePermissionReader() {
   if (permissionsWired) return;
   permissionsWired = true;

@@ -1,5 +1,6 @@
 /**
- * Standalone stubs for dottie-mac-use-ax CLI — replaces Dottie.app-only types.
+ * Package data dir — standalone by default (~/.dottie-mac-use).
+ * Override: DOTTIE_MAC_USE_DATA or DOTTIE_DIR (desktop sets these to ~/.dottie).
  */
 import Foundation
 import ApplicationServices
@@ -22,7 +23,22 @@ struct AppPorts {
 }
 
 struct AppPaths {
-    static let agentTokenPath: String = ".dottie/agent_token"
+    /// Matches JS paths.js: DOTTIE_MAC_USE_DATA → DOTTIE_DIR → ~/.dottie-mac-use
+    static var dataDir: URL {
+        let env = ProcessInfo.processInfo.environment
+        let home = FileManager.default.homeDirectoryForCurrentUser
+        if let raw = env["DOTTIE_MAC_USE_DATA"], !raw.isEmpty {
+            return URL(fileURLWithPath: (raw as NSString).expandingTildeInPath, isDirectory: true)
+        }
+        if let raw = env["DOTTIE_DIR"], !raw.isEmpty {
+            return URL(fileURLWithPath: (raw as NSString).expandingTildeInPath, isDirectory: true)
+        }
+        return home.appendingPathComponent(".dottie-mac-use")
+    }
+
+    static var agentTokenURL: URL {
+        dataDir.appendingPathComponent("agent_token")
+    }
 }
 
 /// AX trust snapshot — CLI uses live AXIsProcessTrusted (no polling).
@@ -32,14 +48,14 @@ final class AccessibilityPermissionManager {
     private init() {}
 }
 
-/// No-op — control-mode glow is Dottie.app Face only.
+/// No-op — control-mode glow is Face-only when embedded in Dottie.app.
 final class ControlModeOverlayManager {
     static let shared = ControlModeOverlayManager()
     func noteControlActivity() {}
     private init() {}
 }
 
-/// Mint/read ~/.dottie/agent_token (same contract as AgentManager.ensureAgentToken).
+/// Mint/read agent_token under package data dir.
 final class AgentManager {
     static let shared = AgentManager()
     private let lock = NSLock()
@@ -49,9 +65,8 @@ final class AgentManager {
     func ensureAgentToken() -> String {
         lock.lock()
         defer { lock.unlock() }
-        let home = FileManager.default.homeDirectoryForCurrentUser
-        let dir = home.appendingPathComponent(".dottie")
-        let path = dir.appendingPathComponent("agent_token")
+        let dir = AppPaths.dataDir
+        let path = AppPaths.agentTokenURL
         if let existing = try? String(contentsOf: path, encoding: .utf8)
             .trimmingCharacters(in: .whitespacesAndNewlines),
            !existing.isEmpty {
@@ -68,7 +83,7 @@ final class AgentManager {
         if !ok {
             AppLogger.error("Failed to write \(path.path) — AX requests will 401")
         } else {
-            AppLogger.info("Generated new agent token")
+            AppLogger.info("Generated new agent token at \(path.path)")
         }
         return token
     }

@@ -67,8 +67,7 @@ class MacUseService {
     /// AX requests are human/agent-paced, so a tiny file read per request is negligible.
     /// - Returns: The trimmed token, or nil if the file is missing/unreadable.
     private func currentAuthToken() -> String? {
-        let tokenPath = FileManager.default.homeDirectoryForCurrentUser
-            .appendingPathComponent(AppPaths.agentTokenPath).path
+        let tokenPath = AppPaths.agentTokenURL.path
         return try? String(contentsOfFile: tokenPath, encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines)
     }
 

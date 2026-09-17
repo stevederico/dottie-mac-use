@@ -1,14 +1,11 @@
 /**
- * Workspace file tools for Dottie desktop agent.
- * Provides read/write access to ~/.dottie/workspace/ folder.
+ * Workspace file tools — package data dir/workspace.
  */
 
 import { readFileSync, writeFileSync, readdirSync, unlinkSync, mkdirSync, statSync, existsSync } from 'node:fs';
 import path from 'node:path';
-import os from 'node:os';
 import { toolOk, tagDomain } from './shared.js';
-
-const WORKSPACE_DIR = path.join(os.homedir(), '.dottie', 'workspace');
+import { WORKSPACE_DIR } from '../paths.js';
 
 /**
  * Ensure workspace directory exists.
@@ -35,7 +32,7 @@ function resolvePath(relativePath) {
 export const workspaceTools = tagDomain([
   {
     name: 'mac_workspace_write',
-    description: 'Write a raw text file to the agent workspace (~/.dottie/workspace/). ' +
+    description: 'Write a raw text file to the agent workspace (package workspace/). ' +
       'Use ONLY for generated code, scripts, drafts, or files the user explicitly asked to be saved as a file. ' +
       'DO NOT use for tasks/todos (use mac_task_create), notes (use mac_notes_create), reminders (use mac_reminder_create), ' +
       'calendar events (use mac_calendar_create), or memory (use dottie_memory_save). ' +
@@ -72,7 +69,7 @@ export const workspaceTools = tagDomain([
 
   {
     name: 'mac_workspace_read',
-    description: 'Read a raw text file from the agent workspace (~/.dottie/workspace/). ' +
+    description: 'Read a raw text file from the agent workspace (package workspace/). ' +
       'Use ONLY to review files previously saved with mac_workspace_write. ' +
       'DO NOT use to look up tasks (use mac_task_list), notes (use mac_notes_list), reminders (use mac_reminder_list), or events (use mac_calendar_list).',
     parameters: {
@@ -110,7 +107,7 @@ export const workspaceTools = tagDomain([
 
   {
     name: 'mac_workspace_list',
-    description: 'List files and folders in the agent workspace (~/.dottie/workspace/). Use this to see what files are available.',
+    description: 'List files and folders in the agent workspace (package workspace/). Use this to see what files are available.',
     parameters: {
       type: 'object',
       properties: {
@@ -148,7 +145,7 @@ export const workspaceTools = tagDomain([
 
   {
     name: 'mac_workspace_delete',
-    description: 'Delete a file from the agent workspace (~/.dottie/workspace/). Shows a confirmation dialog before deleting. Do NOT pass confirmed parameter - the user must confirm via the dialog.',
+    description: 'Delete a file from the agent workspace (package workspace/). Shows a confirmation dialog before deleting. Do NOT pass confirmed parameter - the user must confirm via the dialog.',
     parameters: {
       type: 'object',
       properties: {

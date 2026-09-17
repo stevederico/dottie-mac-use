@@ -9,6 +9,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PORTS } from './ports.js';
 import { log } from './logger.js';
+import { DOTTIE_DIR } from './paths.js';
+import { ensureAgentToken } from './agent_token.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BIN_NAME = 'dottie-mac-use-ax';
@@ -78,6 +80,8 @@ function spawnAx(bin) {
   }
   const env = { ...process.env };
   if (!env.DOTTIE_AX_PORT) env.DOTTIE_AX_PORT = String(PORTS.AX_PORT);
+  if (!env.DOTTIE_MAC_USE_DATA) env.DOTTIE_MAC_USE_DATA = DOTTIE_DIR;
+  ensureAgentToken(); // mint before AX boots so Bearer matches
   const proc = spawn(bin, [], {
     env,
     stdio: ['ignore', 'ignore', 'pipe'],

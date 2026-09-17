@@ -2,22 +2,27 @@
 
 macOS named tools + AX/EventKit CLI (`:1319`) + HTTP façade (`:1321`).
 
-Standalone. No gateway. No Dottie.app.
+Completely standalone. No gateway. No Dottie.app. Own data dir.
 
 ```bash
 npm install
 npm start
 ```
 
-AX binary ships in `bin/dottie-mac-use-ax`. Rebuild with `npm run build:ax` if missing (needs `swiftc`).
+| | |
+|---|---|
+| HTTP | `:1321` |
+| AX CLI | `:1319` (`bin/dottie-mac-use-ax`) |
+| Data | `~/.dottie-mac-use/` (token, workspace, permissions) |
+
+Override data dir: `DOTTIE_MAC_USE_DATA=/path`. Desktop sets this to `~/.dottie` when embedding.
 
 | Command | What |
 |---|---|
-| `npm start` | HTTP `:1321` (starts AX `:1319`) |
+| `npm start` | HTTP + AX |
 | `npm run mcp` | MCP stdio |
+| `npm run build:ax` | rebuild AX binary |
 
-Grant **Accessibility** to `bin/dottie-mac-use-ax` (System Settings → Privacy).
-
-State under `~/.dottie/` (token, permissions DB, workspace).
+Grant **Accessibility** to `bin/dottie-mac-use-ax`.
 
 Apple Silicon + Node ≥22.
