@@ -50,11 +50,6 @@ export function isAllowedHubURL(url) {
   return false;
 }
 
-/** @internal test helper — clear catalog cache between cases */
-export function _resetHubCatalogCacheForTests() {
-  catalogCache = { at: 0, apps: [] };
-}
-
 /**
  * Normalize for fuzzy title match.
  * @param {string} s
