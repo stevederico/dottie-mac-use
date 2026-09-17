@@ -65,7 +65,7 @@ struct AXActionExecutor {
     /// Checks if a name contains any destructive keywords via word-boundary match.
     /// "Clear cache" won't false-positive on "clear" (it would with the old substring match),
     /// but "Clear" and "Clear all" both match. Phrases like "log out" match verbatim.
-    /// Exposed as `internal` so DottieTests can regression-test the keyword list.
+    /// Keyword list for AX action classification.
     /// - Parameter name: The element name or title to check.
     /// - Returns: True if the name contains a destructive keyword at a word boundary.
     static func isDestructiveName(_ name: String) -> Bool {
