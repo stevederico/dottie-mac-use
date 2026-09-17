@@ -55,6 +55,12 @@ export function listTools() {
     inputSchema: t.parameters && typeof t.parameters === 'object'
       ? t.parameters
       : { type: 'object', properties: {} },
+    parameters: t.parameters && typeof t.parameters === 'object'
+      ? t.parameters
+      : { type: 'object', properties: {} },
+    _domain: t._domain || null,
+    _permission: t._permission || null,
+    _internalParams: t._internalParams || undefined,
   }));
 }
 
